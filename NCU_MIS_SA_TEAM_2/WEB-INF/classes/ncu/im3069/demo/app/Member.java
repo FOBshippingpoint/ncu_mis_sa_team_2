@@ -15,6 +15,14 @@ import java.util.Calendar;
  * @since 1.0.0
  */
 
+/**
+ * @author Asus
+ *
+ */
+/**
+ * @author Asus
+ *
+ */
 public class Member {
     
     /** id，會員編號 */
@@ -34,6 +42,9 @@ public class Member {
     
     /** status，會員之組別 */
     private String status;
+
+    /** isAdmin，是否為管理員 */
+    private boolean isAdmin;
     
     /** mh，MemberHelper之物件與Member相關之資料庫方法（Sigleton） */
     private MemberHelper mh =  MemberHelper.getHelper();
@@ -202,7 +213,17 @@ public class Member {
         this.status = data.getString("status");
     }
     
+    
     /**
+     * 取得是否為管理者
+     * 
+     * @return 是否為管理者
+     */
+    public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	/**
      * 計算會員之組別<br>
      * 若為偶數則為「偶數會員」，若為奇數則為「奇數會員」
      */
