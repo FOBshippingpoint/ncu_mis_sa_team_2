@@ -1,161 +1,122 @@
-<!DOCTYPE html>
 <html>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>CakePHP: the rapid development php framework: Members</title>
+    <title>index</title>
     <link href="statics/icon/favicon.ico" type="image/x-icon" rel="icon">
     <link href="statics/icon/favicon.ico" type="image/x-icon" rel="shortcut icon">
-    <link rel="stylesheet" type="text/css" href="statics/css/cake.generic.css">
-
     <script src="statics/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <!-- <script src="statics/js/js.cookie.min.js" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+        integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // 檢查有沒有登入
+            if (Cookies.get('memberName') === undefined) {
+                // 尚未登入
+                $('#login-div').show();
+                $('#logout-div').hide();
+            } else {
+                // 已登入
+                $('#login-div').hide();
+                $('#logout-div').show();
+
+                $('#message').text('歡迎回來！' + Cookies.get('memberName'));
+            }
+
+            // 登出
+            $('#logout-button').click(function () {
+                Cookies.remove('memberName');
+                alert('已登出');
+                location.reload();
+            })
+
+            // 登入
+            $('#login-button').click(function () {
+                let request = {
+                    'email': $('#email').val(),
+                    'password': $('#password').val(),
+                };
+
+                let data_string = JSON.stringify(request);
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/login.do",
+                    crossDomain: true,
+                    data: data_string,
+                    cache: false,
+                    dataType: 'json',
+                    timeout: 5000,
+                    success: function (response) {
+                        if (response.status == 200) {
+                            alert('登入成功');
+                            location.reload();
+                        } else if (response.status = 401) {
+                            alert('帳號密碼錯誤');
+                            $('#email').text('');
+                            $('#password').text('');
+                        }
+                        console.log(response);
+                    },
+                    error: function (jqXHR, exception) {
+                        var msg = '';
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect.\n Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        alert(msg);
+                    },
+                });
+            })
+
+        });
+    </script>
+    <style>
+        .center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="container">
-        <div id="header">
-            <h1><a href="http://cakephp.org/">CakePHP: the rapid development php framework</a></h1>
-        </div>
-        <div id="content">
-            <h2>會員清單</h2>
-            <a href="register.html">新增會員</a>
-            <a href="product.html">購物車模組</a>
-
-            <div id="flashMessage" class="message" style="display: none;"></div>
-
-            <table id="table">
-                <thead>
-                    <tr>
-                        <th>編號</th>
-                        <th>姓名</th>
-                        <th>電郵</th>
-                        <th>更新時間</th>
-                        <th>會員組別</th>
-                        <th>功能</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
+    <div class="center">
+        <div class="center" id="login-div">
+            <table>
+                <tr>
+                    <td>伊媚兒：</td>
+                    <td><input type="text" id="email"></td>
+                </tr>
+                <tr>
+                    <td align="right">密碼：</td>
+                    <td><input type="password" id="password"></td>
+                </tr>
             </table>
-            <script type="text/javascript">
-                // 全域變數紀錄SQL指令下的次數
-                var sql_num = 0;
-                function deleteMember(id) {
-                    var check = window.confirm("確認刪除會員？");
-                    if (check == true) {
-                        console.log("You pressed OK!");
-                        var request = {'id': id};
-                        var data_string = JSON.stringify(request);
-                        $.ajax({
-                            type: "DELETE",
-                            url: "api/member.do",
-                            crossDomain: true,
-                            data: data_string,
-                            cache: false,
-                            dataType: 'json',
-                            timeout: 5000,
-                            success: function (response) {
-                                if(response.status == 200){
-                                    $("#flashMessage").html("成功! 已經成功刪除會員...");
-                                    $("#flashMessage").show();
-                                    getAllMember();
-                                }
-                                console.log(response);
-                            },
-                            error: function () {
-                                alert("無法連線到伺服器！");
-                            }
-                        });
-                    }
-                    else {
-                        console.log("You pressed Cancel!");
-                    }
-                }
-
-                function getAllMember() {
-                    // 發出POST的GET請求取得所有會員列表
-                    $.ajax({
-                            type: "GET",
-                            url: "api/member.do",
-                            crossDomain: true,
-                            cache: false,
-                            dataType: 'json',
-                            timeout: 5000,
-                            success: function (response) {
-                                if(response.status == 200){
-                                    updateTable(response.response.data);
-                                    updateSQLTable(response.response);
-                                }
-                                console.log(response);
-                            },
-                            error: function () {
-                                alert("無法連線到伺服器！");
-                            }
-                    });
-                }
-                
-                // 更新會員列表表格
-                function updateTable(data) {
-                    $("#table > tbody").empty();
-                    var table_html = '';
-                    $.each(data, function(index, value) {
-                        table_html += '<tr><td scope="row">' + value['id'] + '</td>';
-                        table_html += '<td>' + value['name'] + '</td>';
-                        table_html += '<td>' + value['email'] + '</td>';
-                        table_html += '<td>' + value['login_times'] + '</td>';
-                        table_html += '<td>' + value['status'] + '</td>';
-                        table_html += '<td>' + '<a href="edit.html?id=' + value['id'] + '">編輯</a> | ';
-                        table_html += '<a href="javascript: deleteMember(' + value['id'] + ');">刪除</a></td></tr>';
-                    })
-
-                    $("#table > tbody").append(table_html);
-                }
-                
-                // 更新SQL指令歷史表格
-                function updateSQLTable(data) {
-                    $("#sql_log > tbody").empty();
-                    var time = (data.time / 1000000).toFixed(2);
-                    var table_html = "";
-                    
-                    sql_num = 0;
-                    sql_num += 1
-
-                    table_html += '<tr>';
-                    table_html += '<td>' + sql_num + '</td>';
-                    table_html += '<td>' + data.sql + '</td>';
-                    table_html += '<td style="text-align: right">' + '0' + '</td>';
-                    table_html += '<td style="text-align: right">' + data.row + '</td>';
-                    table_html += '<td style="text-align: right">' + data.row + '</td>';
-                    table_html += '<td style="text-align: right">' + time + '</td>';
-                    table_html += '</tr>';
-                    $("#sql_log > tbody").append(table_html);
-                    $("#sql_summary").html("(default) " + data.row + " queries took " + time + " ms");
-                }
-                $(document).ready(function() {
-                    getAllMember();
-                });
-            </script>
+            <br>
+            <input type="button" id="login-button" value="登入">
         </div>
-        <div id="footer">
-            <a href="http://www.cakephp.org/" target="_blank" id="cake-powered"><img src="statics/img/cake.power.gif" alt="CakePHP: the rapid development php framework" border="0"></a>
-            <p>CakePHP 2.6.10</p>
+        <p id="message"></p>
+        <div id="logout-div" style="display: none;">
+            <input type="button" id="logout-button" value="登出">
         </div>
     </div>
-    <table class="cake-sql-log" id="sql_log" summary="Cake SQL Log" cellspacing="0">
-        <caption id="sql_summary">(default) 0 query took 0 ms</caption>
-        <thead>
-            <tr>
-                <th>Nr</th>
-                <th>Query</th>
-                <th>Error</th>
-                <th>Affected</th>
-                <th>Num. rows</th>
-                <th>Took (ms)</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
 </body>
 
 </html>

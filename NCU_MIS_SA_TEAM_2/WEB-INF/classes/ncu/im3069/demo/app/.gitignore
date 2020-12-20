@@ -6,3 +6,6 @@
 /OrderItemHelper.class
 /Product.class
 /ProductHelper.class
+/LoginController.class
+/LoginHelper.class
+/Helper.class
