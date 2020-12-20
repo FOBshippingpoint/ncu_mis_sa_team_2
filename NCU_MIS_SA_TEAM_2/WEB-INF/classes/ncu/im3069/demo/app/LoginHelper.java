@@ -47,8 +47,9 @@ public class LoginHelper extends Helper{
             	String nameString = rs.getString("name");
             	String emailString = rs.getString("email");
             	String passwordString = rs.getString("password");
+            	boolean isAdmin = rs.getBoolean("is_admin");
             	
-            	member = new Member(emailString, passwordString, nameString);
+            	member = new Member(emailString, passwordString, nameString, isAdmin);
             }
 
             /** 紀錄真實執行的SQL指令，並印出 **/

@@ -48,7 +48,7 @@ public class MemberController extends HttpServlet {
         String name = jso.getString("name");
         
         /** 建立一個新的會員物件 */
-        Member m = new Member(email, password, name);
+        Member m = new Member(email, password, name, true);
         
         /** 後端檢查是否有欄位為空值，若有則回傳錯誤訊息 */
         if(email.isEmpty() || password.isEmpty() || name.isEmpty()) {

@@ -57,10 +57,11 @@ public class Member {
      * @param password 會員密碼
      * @param name 會員姓名
      */
-    public Member(String email, String password, String name) {
+    public Member(String email, String password, String name, boolean isAdmin) {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.isAdmin = isAdmin;
         update();
     }
 

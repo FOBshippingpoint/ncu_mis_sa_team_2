@@ -2,18 +2,16 @@ package ncu.im3069.demo.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
+import javax.servlet.http.HttpSession;
 
 import ncu.im3069.demo.app.LoginHelper;
 import ncu.im3069.demo.app.Member;
-import ncu.im3069.tools.JsonReader;
 
 @WebServlet("/api/login.do")
 public class LoginController extends HttpServlet {
@@ -33,41 +31,69 @@ public class LoginController extends HttpServlet {
      * @throws IOException Signals that an I/O exception has occurred.
      */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/** 透過JsonReader類別將Request之JSON格式資料解析並取回 */
-		JsonReader jsr = new JsonReader(request);
-		JSONObject jso = jsr.getObject();
+//		/** 透過JsonReader類別將Request之JSON格式資料解析並取回 */
+//		JsonReader jsr = new JsonReader(request);
+//		JSONObject jso = jsr.getObject();
+//
+//		/** 取出經解析到JSONObject之Request參數 */
+//		String email = jso.getString("email");
+//		String password = jso.getString("password");
+		
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
 
-		/** 取出經解析到JSONObject之Request參數 */
-		String email = jso.getString("email");
-		String password = jso.getString("password");
-
-		/** 後端檢查是否有欄位為空值，若有則回傳錯誤訊息 */
-		if (email.isEmpty() || password.isEmpty()) {
-			/** 以字串組出JSON格式之資料 */
-			String resp = "{\"status\": \'400\', \"message\": \'欄位不能有空值\', \'response\': \'\'}";
-			/** 透過JsonReader物件回傳到前端（以字串方式） */
-			jsr.response(resp, response);
-		} else {
 			/** 驗證使用者 */
 			Member member = lh.validate(email, password);
 			/** 登入成功 */
+			String destPage;
 			if (member != null) {
-				Cookie cookie = new Cookie("memberName", member.getName());
-				cookie.setMaxAge(60 * 60 * 24);
-				cookie.setPath("/");
-				response.addCookie(cookie);
-
-				String resp = "{status: '200', " + "message: '登入成功', " + "data: {email:" + member.getEmail() + "}}";
-				jsr.response(resp, response);
+				HttpSession session = request.getSession();
+				session.setAttribute("member", member);
+				request.setAttribute("memberIsAdmin", member.isAdmin());
+				destPage = "/home.jsp";
 			}
 			/** 登入失敗 */
 			else {
-				String resp = "{status: '401', " + "message: '登入失敗', }";
-
-				/** 透過JsonReader物件回傳到前端（以JSONObject方式） */
-				jsr.response(resp, response);
+				String messageString = "登入失敗！帳號密碼錯誤";
+				request.setAttribute("message", messageString);
+				destPage = "/login.jsp";
 			}
-		}
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
+			dispatcher.forward(request, response);
+//		/** 後端檢查是否有欄位為空值，若有則回傳錯誤訊息 */
+//		if (email.isEmpty() || password.isEmpty()) {
+//			/** 以字串組出JSON格式之資料 */
+//			String resp = "{\"status\": \'400\', \"message\": \'欄位不能有空值\', \'response\': \'\'}";
+//			/** 透過JsonReader物件回傳到前端（以字串方式） */
+//			jsr.response(resp, response);
+//		} else {
+//			/** 驗證使用者 */
+//			Member member = lh.validate(email, password);
+//			/** 登入成功 */
+//			if (member != null) {
+//				Cookie cookie = new Cookie("memberName", member.getName());
+//				cookie.setMaxAge(60 * 60 * 24);
+//				cookie.setPath("/");
+//				response.addCookie(cookie);
+//				
+//				System.out.println(member.isAdmin());
+//				Cookie cookie1 = new Cookie("memberIsAdmin", Boolean.toString(member.isAdmin()));
+//				cookie1.setMaxAge(60 * 60 * 24);
+//				cookie1.setPath("/");
+//				response.addCookie(cookie1);
+//				
+//				String resp = "{status: '200', " + "message: '登入成功', " + "data: {email:" + member.getEmail() + "}}";
+//				jsr.response(resp, response);
+//			}
+//			/** 登入失敗 */
+//			else {
+//				String resp = "{status: '401', " + "message: '登入失敗', }";
+//				
+//				/** 透過JsonReader物件回傳到前端（以JSONObject方式） */
+//				jsr.response(resp, response);
+//			}
+//		}
 
 	}
 }
