@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： 127.0.0.1
--- 產生時間： 2020-12-13 13:33:39
+-- 產生時間： 2020-12-21 06:37:56
 -- 伺服器版本： 10.4.14-MariaDB
 -- PHP 版本： 7.4.10
 
@@ -20,25 +20,6 @@ SET time_zone = "+00:00";
 --
 -- 資料庫： `theater`
 --
-
--- --------------------------------------------------------
-
---
--- 資料表結構 `admins`
---
-
-CREATE TABLE `admins` (
-  `id` int(11) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `password` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- 傾印資料表的資料 `admins`
---
-
-INSERT INTO `admins` (`id`, `name`, `password`) VALUES
-(1, 'root', 'root');
 
 -- --------------------------------------------------------
 
@@ -106,8 +87,18 @@ CREATE TABLE `members` (
   `password` varchar(30) DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
-  `login_times` int(11) DEFAULT 0
+  `login_times` int(11) DEFAULT 0,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- 傾印資料表的資料 `members`
+--
+
+INSERT INTO `members` (`id`, `name`, `email`, `password`, `modified`, `created`, `login_times`, `is_admin`) VALUES
+(3, 'root', 'root@mail.com', 'root', NULL, NULL, 0, 1),
+(4, 'user', 'user@mail.com', 'user', NULL, NULL, 0, 0),
+(5, 'admin', 'admin@mail.com', 'admin', NULL, NULL, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -340,12 +331,6 @@ CREATE TABLE `tickets` (
 --
 
 --
--- 資料表索引 `admins`
---
-ALTER TABLE `admins`
-  ADD PRIMARY KEY (`id`);
-
---
 -- 資料表索引 `foods`
 --
 ALTER TABLE `foods`
@@ -411,12 +396,6 @@ ALTER TABLE `tickets`
 --
 
 --
--- 使用資料表自動遞增(AUTO_INCREMENT) `admins`
---
-ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- 使用資料表自動遞增(AUTO_INCREMENT) `foods`
 --
 ALTER TABLE `foods`
@@ -438,7 +417,7 @@ ALTER TABLE `halls`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `members`
 --
 ALTER TABLE `members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `movies`

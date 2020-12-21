@@ -39,14 +39,17 @@ public class LoginController extends HttpServlet {
 //		String email = jso.getString("email");
 //		String password = jso.getString("password");
 		
+		/** 使用request取得email&password */
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
-			/** 驗證使用者 */
+			/** 驗證使用者，詳見LoginHelper#validate */
 			Member member = lh.validate(email, password);
-			/** 登入成功 */
+			/** 動作結束後跳轉網頁 */
 			String destPage;
+			/** 登入成功 */
 			if (member != null) {
+				/** 設定session */
 				HttpSession session = request.getSession();
 				session.setAttribute("member", member);
 				request.setAttribute("memberIsAdmin", member.isAdmin());

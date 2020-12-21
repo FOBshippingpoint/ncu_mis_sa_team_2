@@ -1,12 +1,18 @@
+<!-- 
+上方工具列，給其他檔案共用的jsp
+ -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="ncu.im3069.demo.app.Member"%>
-<%!public String alert(String str) {
-		return "<script>alert(" + str + ")</script>";
+<%!
+/** 實作alert，我沒試過 */
+public String alert(String str) {
+		return "<script>alert(\"" + str + "\")</script>";
 	}
-
+/** 宣告會員角色 */
 	String memberRole = "";%>
 <%
+/** 設定會員角色（如果已登入） */
 	if (request.getAttribute("memberIsAdmin") != null) {
 	memberRole = (boolean) request.getAttribute("memberIsAdmin") ? "管理員" : "會員";
 }
@@ -37,13 +43,14 @@ body {
 <body>
 	<div class="navbar">
 		<span> <%
+		/** 已登入則顯示下列資訊 */
  	if (session.getAttribute("member") != null) {
  	out.print("歡迎回來！");
  %> <span>${sessionScope.member.name}</span> <%=memberRole%> <span>
 				| </span> <%
  	}
  %>
-		</span> <a href="home.jsp">首頁</a>
+		</span> <a href="/NCU_MIS_SA/home.jsp">首頁</a>
 		<%
 			// 已登入	
 		if (session.getAttribute("member") != null) {
