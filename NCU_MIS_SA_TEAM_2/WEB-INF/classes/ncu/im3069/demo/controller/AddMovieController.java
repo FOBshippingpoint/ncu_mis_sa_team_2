@@ -2,10 +2,10 @@ package ncu.im3069.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ncu.im3069.demo.app.AddMovieHelper;
+import ncu.im3069.demo.app.Movie;
 
 @WebServlet("/api/add-movie.do")
 @MultipartConfig
@@ -36,38 +37,34 @@ public class AddMovieController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+
 		String title = request.getParameter("title");
 		String introduction = request.getParameter("introduction");
-		int length = Integer.parseInt(request.getParameter("length"));
+		int rating = Integer.parseInt(request.getParameter("rating"));
 		String version = request.getParameter("version");
-		Date startDate = null;
-		Date endDate = null;
+		int price = Integer.parseInt(request.getParameter("price"));
+		int length = Integer.parseInt(request.getParameter("length"));
+		LocalDate onDate = LocalDate.parse(request.getParameter("on-date"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate offDate = LocalDate.parse(request.getParameter("off-date"),
+				DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-		try {
-			startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("start-date"));
-			endDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("end-date"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String hall = request.getParameter("hall");
-		
-		System.out.println(title);
-		System.out.println(introduction);
-		System.out.println(length);
-		System.out.println(version);
-		System.out.println(startDate);
-		System.out.println(endDate);
-		System.out.println(hall);
-		
+		Movie movie = new Movie(title, introduction, rating, version, price, length, onDate, offDate);
+		int movieId = amh.create(movie);
+
 		/** WEB-INF/web.xml param: NCU_MIS_SA */
-		amh.saveImage(request, "cover", new File(getServletContext().getInitParameter("NCU_MIS_SA")).getAbsolutePath() + "/images/");
+		amh.saveImage(request, "cover",
+				new File(getServletContext().getInitParameter("NCU_MIS_SA")).getAbsolutePath() + "/images/", movieId);
+		
+		
+
+		String hall = request.getParameter("hall");
 
 		/** 動作結束後跳轉網頁 */
-		String destPage = "/NCU_MIS_SA/admin-pages/add-movie";
-		
+		String destPage = "/admin-pages/add-movie.jsp";
+		request.setAttribute("message", "已新增…");
 
-//		RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
-//		dispatcher.forward(request, response);
+		RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
+		dispatcher.forward(request, response);
 	}
+	
 }

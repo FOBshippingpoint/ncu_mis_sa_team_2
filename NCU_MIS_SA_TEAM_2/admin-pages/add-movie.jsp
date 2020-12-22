@@ -4,6 +4,11 @@
 
 	<head>
 		<%@ include file="../theater-header.jsp" %>
+		<% 
+		if(request.getAttribute("message")!=null){
+		out.print(alert(request.getAttribute("message").toString()));
+		}
+		%>
 			<title>線上電影訂票系統</title>
 			<h1>新增電影</h1>
 
@@ -86,6 +91,8 @@
 					<textarea id="introduction" name="introduction" rows="10" cols="50"></textarea>
 					<label for="length">電影長度（分鐘）：</label>
 					<input type="number" min="0" step="1" id="length" name="length">
+					<label for="rating">評分（1～5）：</label>
+					<input type="number" min="1" max="5" step="1" id="rating" name="rating">
 				</div>
 				<div class="my-column">
 					<label for="version">上映版本：</label>
@@ -94,10 +101,12 @@
 						<option value="IMAX">IMAX</option>
 						<option value="3D">3D</option>
 					</select>
-					<label for="start-date">上映日期（含）：</label>
-					<input type="date" id="start-date" name="start-date">
-					<label for="end-date">下檔日期（含）：</label>
-					<input type="date" id="end-date" name="end-date">
+					<label for="price">價格：</label>
+					<input type="number" min="0" step="10" id="price" name="price">
+					<label for="on-date">上映日期（含）：</label>
+					<input type="date" id="on-date" name="on-date">
+					<label for="off-date">下檔日期（含）：</label>
+					<input type="date" id="off-date" name="off-date">
 					<label for="hall">上映影廳</label>
 					<select name="hall" id="hall">
 						<!-- JSP要處理 -->
