@@ -11,3 +11,8 @@
 /Helper.class
 /AddMovieHelper.class
 /Movie.class
+/Hall.class
+/HallHelper.class
+/Showing.class
+/ShowingHelper.class
+/MovieHelper.class

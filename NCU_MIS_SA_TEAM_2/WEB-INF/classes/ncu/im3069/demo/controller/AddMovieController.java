@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ncu.im3069.demo.app.AddMovieHelper;
+import ncu.im3069.demo.app.MovieHelper;
+import ncu.im3069.demo.app.Hall;
 import ncu.im3069.demo.app.Movie;
 
 @WebServlet("/api/add-movie.do")
@@ -24,7 +26,11 @@ public class AddMovieController extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private AddMovieHelper amh = (AddMovieHelper) AddMovieHelper.getHelper();
+	private MovieHelper amh = (MovieHelper) MovieHelper.getHelper();
+
+	public ArrayList<String> getHallNames() {
+		return amh.getHallNames();
+	}
 
 	/**
 	 * 處理 Http Method 請求 POST 方法（新增資料）
@@ -50,14 +56,17 @@ public class AddMovieController extends HttpServlet {
 
 		Movie movie = new Movie(title, introduction, rating, version, price, length, onDate, offDate);
 		int movieId = amh.create(movie);
+		movie.setId(movieId);
 
 		/** WEB-INF/web.xml param: NCU_MIS_SA */
 		amh.saveImage(request, "cover",
 				new File(getServletContext().getInitParameter("NCU_MIS_SA")).getAbsolutePath() + "/images/", movieId);
-		
-		
 
-		String hall = request.getParameter("hall");
+		String hallName = request.getParameter("hall");
+		Hall hall = new Hall(hallName);
+		
+		amh.setShowingOfMovie(movie, hall);
+		
 
 		/** 動作結束後跳轉網頁 */
 		String destPage = "/admin-pages/add-movie.jsp";
@@ -66,5 +75,5 @@ public class AddMovieController extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
 		dispatcher.forward(request, response);
 	}
-	
+
 }

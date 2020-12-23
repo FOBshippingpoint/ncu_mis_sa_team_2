@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 
 public abstract class Helper {
 	
-	protected static Helper helper;
-	
     /** 儲存JDBC資料庫連線 */
     protected Connection conn = null;
     

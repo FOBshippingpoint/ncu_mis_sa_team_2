@@ -9,15 +9,17 @@ import ncu.im3069.demo.util.DBMgr;
 
 public class LoginHelper extends Helper{
 	
+	private static LoginHelper loginHelper = null;
+	
 	private LoginHelper() {
 		
 	}
 	
 	public static LoginHelper getHelper() {
       /** Singleton檢查是否已經有Helper物件，若無則new一個，若有則直接回傳 */
-      if(helper == null) helper = new LoginHelper();
+      if(loginHelper == null) loginHelper = new LoginHelper();
       
-      return (LoginHelper) helper;
+      return loginHelper;
 	}
 	
 	public Member validate(String email, String password) {

@@ -2,6 +2,8 @@ package ncu.im3069.demo.app;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Movie {
 	private int id;
@@ -86,13 +88,34 @@ public class Movie {
 	public LocalDate getOnDate() {
 		return onDate;
 	}
+	public String getOnDateString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return this.getOnDate().format(formatter);
+	}
 	public void setOnDate(LocalDate onDate) {
 		this.onDate = onDate;
 	}
 	public LocalDate getOffDate() {
 		return offDate;
 	}
+	public String getOffDateString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return this.getOffDate().format(formatter);
+	}
 	public void setOffDate(LocalDate offDate) {
 		this.offDate = offDate;
+	}
+	
+	public ArrayList<String> getDatesString(){
+		ArrayList<String> dates = new ArrayList<String>();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		LocalDate date = this.getOnDate();
+		while(date.isBefore(this.getOffDate().plusDays(1))) {
+			dates.add(date.format(formatter));
+			date = date.plusDays(1);
+		}
+		
+		return dates;
 	}
 }
