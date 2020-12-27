@@ -15,7 +15,7 @@
 <%@ include file="../theater-header.jsp"%>
 
 <% 
-Movie movie = (Movie)request.getAttribute("movie"); 
+Movie movie = (Movie)request.getSession().getAttribute("movie"); 
 ArrayList<Showing> showings = (ArrayList<Showing>)request.getAttribute("showings");
 %>
 
@@ -133,7 +133,6 @@ h1 {
 		</div>
 	</div>
 	<form action="#" method="post">
-		<input type="text" value="1" name="movie-id" style="display: none;"/>
 		<label for="showing-id">場次</label> <select name="showing-id"
 			id="showing-id">
 			<%

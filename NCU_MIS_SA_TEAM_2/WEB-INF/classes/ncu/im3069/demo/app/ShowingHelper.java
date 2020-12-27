@@ -128,4 +128,50 @@ public class ShowingHelper extends Helper {
 		}
 	}
 	
+	public Showing getShowingById(int showingId) {
+		Showing showing = null;
+
+		String exexcute_sql = "";
+		ResultSet rs = null;
+		
+		try {
+			/** 取得資料庫之連線 */
+			conn = DBMgr.getConnection();
+			/** SQL指令 */
+			String sql = "SELECT * FROM `showings` WHERE `id` = ? LIMIT 1";
+
+			/** 將參數回填至SQL指令當中，若無則不用只需要執行 prepareStatement */
+			pres = conn.prepareStatement(sql);
+			/** 執行查詢之SQL指令並記錄其回傳之資料 */
+			pres.setInt(1, showingId);
+			rs = pres.executeQuery();
+
+			/** 紀錄真實執行的SQL指令，並印出 **/
+			exexcute_sql = pres.toString();
+			System.out.println(Thread.currentThread().getStackTrace() + " " + exexcute_sql);
+
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				int movieId = rs.getInt("movie_id");
+				int hallId = rs.getInt("hall_id");
+				LocalDateTime start = TimeUtil.toLocalDateTimeFromString(rs.getString("start"));
+				LocalDateTime end = TimeUtil.toLocalDateTimeFromString(rs.getString("end"));
+
+				showing = new Showing(id, movieId, hallId, start, end);
+			}
+
+		} catch (SQLException e) {
+			/** 印出JDBC SQL指令錯誤 **/
+			System.err.format("SQL State: %s\n%s\n%s", e.getErrorCode(), e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			/** 若錯誤則印出錯誤訊息 */
+			e.printStackTrace();
+		} finally {
+			/** 關閉連線並釋放所有資料庫相關之資源 **/
+			DBMgr.close(rs, pres, conn);
+		}
+		
+		return showing;
+	}
+	
 }

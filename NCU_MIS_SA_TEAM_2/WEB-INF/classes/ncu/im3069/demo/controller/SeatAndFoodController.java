@@ -3,14 +3,25 @@ package ncu.im3069.demo.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ncu.im3069.demo.app.Food;
+import ncu.im3069.demo.app.FoodHelper;
+import ncu.im3069.demo.app.FoodType;
+import ncu.im3069.demo.app.FoodTypeHelper;
 import ncu.im3069.demo.app.HallHelper;
+import ncu.im3069.demo.app.Movie;
+import ncu.im3069.demo.app.MovieHelper;
 import ncu.im3069.demo.app.Seat;
+import ncu.im3069.demo.app.SeatHelper;
+import ncu.im3069.demo.app.Showing;
+import ncu.im3069.demo.app.ShowingHelper;
+import ncu.im3069.demo.app.Ticket;
 
 @WebServlet("/member-pages/seat-and-food")
 public class SeatAndFoodController extends HttpServlet {
@@ -37,25 +48,53 @@ public class SeatAndFoodController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ArrayList<Seat> selectedSeats = new ArrayList<>();
-		for(int r=1; r<=HallHelper.getHelper().getSeatsRowNum(); r++) {
-			for(int c=1; c<=HallHelper.getHelper().getSeatsColNum(); c++) {
-				System.out.println(request.getParameter(r+"-"+c));
-				if(request.getParameter(r+"-"+c)!=null) {
-					selectedSeats.add(new Seat(r, c));
+		/** 訂票list */
+		ArrayList<Seat> seats = new ArrayList<>();
+		ArrayList<Ticket> tickets = new ArrayList<>();
+		Showing showing = (Showing) request.getSession().getAttribute("showing");
+		Movie movie = (Movie) request.getSession().getAttribute("movie");
+
+		for (int r = 1; r <= HallHelper.getHelper().getSeatsRowNum(); r++) {
+			for (int c = 1; c <= HallHelper.getHelper().getSeatsColNum(); c++) {
+				if (request.getParameter(r + "-" + c) != null) {
+					System.out.println(r+"-"+c+", ");
+					int seatId = SeatHelper.getHelper().getSeatByRowColNum(r, c).getId();
+					seats.add(new Seat(seatId, r, c));
+					Ticket ticket = new Ticket(seatId, showing.getId(), -1);
+					tickets.add(ticket);
 				}
 			}
 		}
-		
-		
-		
 
-		/** 動作結束後跳轉網頁 */
-//		String destPage = "/member-pages/select-seat";
-//		request.setAttribute("message", "已新增…");
-//
-//		RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
-//		dispatcher.forward(request, response);
+		/** 食物list */
+		ArrayList<Food> foods = new ArrayList<>();
+		/** 食物總價 */
+		int foodTotal = 0;
+
+		for (FoodType foodType : FoodTypeHelper.getHelper().getFoodTypes()) {
+			int num = Integer.parseInt(request.getParameter(foodType.getId() + "-num"));
+			foods.add(new Food(-1, foodType.getId(), num));
+			foodTotal += foodType.getPrice() * num;
+		}
+
+		/** 電影票部份 */
+		int ticketTotal = 0;
+		ticketTotal += tickets.size() * movie.getPrice();
+
+		/** ！！order_id尚未設定 */
+		request.setAttribute("tickets", tickets);
+		request.setAttribute("foods", foods);
+
+		request.setAttribute("seats", seats);
+
+		request.setAttribute("ticketTotal", ticketTotal);
+		request.setAttribute("foodTotal", foodTotal);
+
+		/** 轉址 */
+		String destPage = "/member-pages/checkout.jsp";
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
+		dispatcher.forward(request, response);
 	}
 
 }

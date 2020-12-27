@@ -1,3 +1,7 @@
+<%@page import="ncu.im3069.demo.app.FoodTypeHelper"%>
+<%@page import="ncu.im3069.demo.app.HallHelper"%>
+<%@page import="ncu.im3069.demo.app.Food"%>
+<%@page import="ncu.im3069.demo.app.Ticket"%>
 <%@page import="ncu.im3069.demo.app.FoodType"%>
 <%@page import="ncu.im3069.demo.app.Seat"%>
 <%@page import="java.util.stream.Collectors"%>
@@ -11,11 +15,21 @@
 	pageEncoding="UTF-8"%>
 
 <%
-ArrayList<Seat> seats = (ArrayList<Seat>)request.getAttribute("seatsAvailable");
-int rowNum = (int)request.getAttribute("rowNum");
-int colNum = (int)request.getAttribute("colNum");
+Showing showing = (Showing) request.getSession().getAttribute("showing");
+String start = showing.getStartString();
+String end = showing.getEndString();
+String hallName = HallHelper.getHelper().getHallById(showing.getHallId()).getName();
 
-ArrayList<FoodType> foodTypes = (ArrayList<FoodType>)request.getAttribute("foodTypes");
+Movie movie = (Movie) request.getSession().getAttribute("movie");
+
+ArrayList<Seat> seats = (ArrayList<Seat>) request.getAttribute("seats");
+
+ArrayList<Ticket> tickets = (ArrayList<Ticket>) request.getAttribute("tickets");
+
+ArrayList<Food> foods = (ArrayList<Food>) request.getAttribute("foods");
+
+int ticketTotal = (int) request.getAttribute("ticketTotal");
+int foodTotal = (int) request.getAttribute("foodTotal");
 %>
 
 <html>
@@ -37,7 +51,6 @@ ArrayList<FoodType> foodTypes = (ArrayList<FoodType>)request.getAttribute("foodT
 			alert($(this).val());
 		});
 	});
-
 </script>
 
 <style>
@@ -105,40 +118,32 @@ h1 {
 </head>
 
 <body>
-	<form action="/NCU_MIS_SA/member-pages/seat-and-food" method="post">
-		<input style="display: none;" name="showingId" value="<%= request.getAttribute("showingId") %>">
-		<input style="display: none;" name="movieId" value="<%= request.getAttribute("movieId") %>">
-		<table>
-			<tr>
-			<td><b>  </b></td>
-			<% for(int c=1; c<=colNum; c++) { 
-				%>
-				<td><b><%= c %></b></td>
-				<%
-			 } %>
-			<% for(int r=1; r<=rowNum; r++) { %>
-				</tr>
-				<tr>
-				<td><b><%= r %></b></td>
-				<% for(int c=1; c<=colNum; c++) { 
-					boolean available = false;
-					for(Seat seat: seats){
-						if(r == seat.getRowNum() && c == seat.getColNum()){
-							available = true;
-						}
-					}
-					%>
-					<td><input type="checkbox" name="<%= r + "-" + c %>" <%= available?"":"disabled" %>></td>
-					<%
-				 } %>
-				</tr>
-			<% } %>
-		</table>
-		<% for(FoodType foodType: foodTypes) { %>
-			<label for="<%= foodType.getId() %>-num"><%= foodType.getName() %>（<%= foodType.getPrice() %>元）</label>
-			<input type="number" min="0" step="1" name="<%= foodType.getId() %>-num"  value="0"><br>
-		<% } %>
-		<input type="submit">
+	<div>
+		電影：<%=movie.getTitle()%><br> 
+		場次：<%=hallName%>廳；<%=start%>～<%=end%><br>
+		座位：<%
+	for (Seat seat : seats) {
+		out.print(seat.getRowNum() + "排" + seat.getColNum() + ", ");
+	}
+	%><br>
+		票價：<% out.print(movie.getPrice() + " x " + tickets.size() + " = " + ticketTotal); %>元<br>
+		餐點：<%
+	for (Food food : foods) {
+		FoodType foodType = FoodTypeHelper.getHelper().getFoodTypeById(food.getFoodTypeId());
+		out.print(foodType.getName() + food.getNum() + "份：" + foodType.getPrice() * food.getNum() + "元, ");
+	}
+	%><br>
+		餐點價：<%=foodTotal %>元<br>
+		<hr>
+		總價：<%=ticketTotal + foodTotal %>元<br>
+		<hr>
+	</div>
+	<form action="#" method="post">
+		<label for="credit-card">信用卡卡號</label> <input type="text"
+			name="credit-card"> <br><label for="CVV">信用卡檢查碼（位於卡片背面）</label> <input
+			type="text" name="CVV">
+			<br>
+		<input type="submit" value="送出">
 	</form>
 </body>
 
