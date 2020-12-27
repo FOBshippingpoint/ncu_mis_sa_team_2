@@ -8,17 +8,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%
+Movie movie = MovieHelper.getHelper().getMovieById(Integer.parseInt(request.getParameter("movie")));
+%>
 
 <html>
 
 <head>
 <%@ include file="../theater-header.jsp"%>
-
-<% 
-Movie movie = (Movie)request.getAttribute("movie"); 
-ArrayList<Showing> showings = (ArrayList<Showing>)request.getAttribute("showings");
-%>
-
 <title>線上電影訂票系統</title>
 <h1>訂票</h1>
 
@@ -104,7 +101,8 @@ h1 {
 <body>
 	<div>
 		<div class="movie-container">
-			<b id="title">～${movie.getTitle()}～</b>
+			<b id="title">～<%=movie.getTitle()%>～
+			</b>
 			<%
 			out.print("<img src=\"/NCU_MIS_SA/images/" + movie.getId() + ".png\">");
 			%>
@@ -132,12 +130,12 @@ h1 {
 				<b>上映時間：</b><%=movie.getOnDateString()%>～<%=movie.getOffDateString()%></p>
 		</div>
 	</div>
-	<form action="#" method="post">
-		<input type="text" value="1" name="movie-id" style="display: none;"/>
+	<form action="/NCU_MIS_SA/api/booking.do" method="post">
+		<input type="text" placeholder="1" name="movie-id" style="display: none;"/>
 		<label for="showing-id">場次</label> <select name="showing-id"
 			id="showing-id">
 			<%
-			for (Showing showing : showings) {
+			for (Showing showing : ShowingHelper.getHelper().getShowingsByMovie(movie)) {
 			%>
 			<option value="<%=showing.getId()%>">
 				<%=showing.getStartString()%>

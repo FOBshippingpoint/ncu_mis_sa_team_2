@@ -5,10 +5,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import org.json.*;
 
-import ncu.im3069.demo.app.Order;
+import ncu.im3069.demo.app.OrderOld;
 import ncu.im3069.demo.app.Product;
 import ncu.im3069.demo.app.ProductHelper;
-import ncu.im3069.demo.app.OrderHelper;
+import ncu.im3069.demo.app.OrderHelperOld;
 import ncu.im3069.tools.JsonReader;
 
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +23,7 @@ public class OrderController extends HttpServlet {
     private ProductHelper ph =  ProductHelper.getHelper();
 
     /** oh，OrderHelper 之物件與 order 相關之資料庫方法（Sigleton） */
-	private OrderHelper oh =  OrderHelper.getHelper();
+	private OrderHelperOld oh =  OrderHelperOld.getHelper();
 
     public OrderController() {
         super();
@@ -90,7 +90,7 @@ public class OrderController extends HttpServlet {
         JSONArray quantity = jso.getJSONArray("quantity");
 
         /** 建立一個新的訂單物件 */
-        Order od = new Order(first_name, last_name, email, address, phone);
+        OrderOld od = new OrderOld(first_name, last_name, email, address, phone);
 
         /** 將每一筆訂單細項取得出來 */
         for(int i=0 ; i < item.length() ; i++) {

@@ -4,9 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import ncu.im3069.demo.util.DBMgr;
+import ncu.im3069.demo.util.TimeUtil;
 
 public class ShowingHelper extends Helper {
 
@@ -44,7 +47,7 @@ public class ShowingHelper extends Helper {
 
 			/** 紀錄真實執行的SQL指令，並印出 **/
 			exexcute_sql = pres.toString();
-			System.out.println(Thread.currentThread().getStackTrace() + " " + exexcute_sql);
+			System.out.println(Thread.currentThread().getStackTrace() + ": " + exexcute_sql);
 
 			/** 透過 while 迴圈移動pointer，取得每一筆回傳資料 */
 			while (rs.next()) {
@@ -52,8 +55,8 @@ public class ShowingHelper extends Helper {
 				int id = rs.getInt("id");
 				int movieId = rs.getInt("movie_id");
 				int hallId = rs.getInt("hall_id");
-				LocalDateTime start = rs.getTimestamp("start").toLocalDateTime();
-				LocalDateTime end = rs.getTimestamp("end").toLocalDateTime();
+				LocalDateTime start = TimeUtil.toLocalDateTimeFromString(rs.getString("start"));
+				LocalDateTime end = TimeUtil.toLocalDateTimeFromString(rs.getString("end"));
 
 				Showing showing = new Showing(id, movieId, hallId, start, end);
 				showings.add(showing);
@@ -124,5 +127,5 @@ public class ShowingHelper extends Helper {
 			DBMgr.close(pres, conn);
 		}
 	}
-
+	
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="ncu.im3069.demo.controller.BookingController" project="NCU_MIS_SA_TEAM_2" 
+    file="/NCU_MIS_SA_TEAM_2/WEB-INF/classes/ncu/im3069/demo/controller/BookingController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="160" width="337" x="105" y="111"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="ncu.im3069.demo.controller.OrderController" project="NCU_MIS_SA_TEAM_2" 
+    file="/NCU_MIS_SA_TEAM_2/WEB-INF/classes/ncu/im3069/demo/controller/OrderController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="178" width="337" x="482" y="111"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="ncu.im3069.demo.controller.LogoutController" project="NCU_MIS_SA_TEAM_2" 
+    file="/NCU_MIS_SA_TEAM_2/WEB-INF/classes/ncu/im3069/demo/controller/LogoutController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="272" y="418"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="ncu.im3069.demo.controller.AddMovieController" project="NCU_MIS_SA_TEAM_2" 
+    file="/NCU_MIS_SA_TEAM_2/WEB-INF/classes/ncu/im3069/demo/controller/AddMovieController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="646" y="429"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="ncu.im3069.demo.controller.ProductController" project="NCU_MIS_SA_TEAM_2" 
+    file="/NCU_MIS_SA_TEAM_2/WEB-INF/classes/ncu/im3069/demo/controller/ProductController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="270" y="635"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="ncu.im3069.demo.controller.LoginController" project="NCU_MIS_SA_TEAM_2" 
+    file="/NCU_MIS_SA_TEAM_2/WEB-INF/classes/ncu/im3069/demo/controller/LoginController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1026" y="423"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="ncu.im3069.demo.controller.MemberController" project="NCU_MIS_SA_TEAM_2" 
+    file="/NCU_MIS_SA_TEAM_2/WEB-INF/classes/ncu/im3069/demo/controller/MemberController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1028" y="210"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

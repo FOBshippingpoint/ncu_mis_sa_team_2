@@ -4,3 +4,6 @@
 /LoginController.class
 /LogoutController.class
 /AddMovieController.class
+/BookingController.class
+/SelectSeatController.class
+/SeatAndFoodController.class

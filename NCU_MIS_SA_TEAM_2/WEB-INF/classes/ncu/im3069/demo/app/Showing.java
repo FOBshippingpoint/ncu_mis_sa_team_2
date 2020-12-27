@@ -1,5 +1,6 @@
 package ncu.im3069.demo.app;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -64,5 +65,14 @@ public class Showing {
 	}
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
+	}
+	
+	public LocalDate getDate() {
+		return this.getStart().toLocalDate();
+	}
+	
+	public String getDateString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return this.getDate().format(formatter);
 	}
 }

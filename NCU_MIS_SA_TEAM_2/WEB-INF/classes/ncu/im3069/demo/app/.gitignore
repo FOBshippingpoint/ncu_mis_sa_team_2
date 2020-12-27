@@ -16,3 +16,12 @@
 /Showing.class
 /ShowingHelper.class
 /MovieHelper.class
+/Seat.class
+/SeatHelper.class
+/Ticket.class
+/Food.class
+/TicketHelper.class
+/OrderOld.class
+/OrderHelperOld.class
+/FoodType.class
+/FoodTypeHelper.class

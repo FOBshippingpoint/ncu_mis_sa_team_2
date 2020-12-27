@@ -1,3 +1,4 @@
+<%@page import="ncu.im3069.demo.app.Seat"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.time.LocalDate"%>
@@ -8,17 +9,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%
+ArrayList<Seat> seats = (ArrayList<Seat>)request.getAttribute("seatsAvailable");
+int rowNum = (int)request.getAttribute("rowNum");
+int colNum = (int)request.getAttribute("colNum");
+%>
 
 <html>
 
 <head>
 <%@ include file="../theater-header.jsp"%>
-
-<% 
-Movie movie = (Movie)request.getAttribute("movie"); 
-ArrayList<Showing> showings = (ArrayList<Showing>)request.getAttribute("showings");
-%>
-
 <title>線上電影訂票系統</title>
 <h1>訂票</h1>
 
@@ -102,53 +102,37 @@ h1 {
 </head>
 
 <body>
-	<div>
-		<div class="movie-container">
-			<b id="title">～${movie.getTitle()}～</b>
-			<%
-			out.print("<img src=\"/NCU_MIS_SA/images/" + movie.getId() + ".png\">");
-			%>
-			<p>
-				<b>評分：</b>
-				<%
-				for (int i = 0; i < movie.getRating(); i++) {
+	<form action="/NCU_MIS_SA/member-pages/seat-and-food" method="post">
+		<table>
+			<tr>
+			<td><b>  </b></td>
+			<% for(int c=1; c<=colNum; c++) { 
 				%>
-				<img src="https://i.imgur.com/fHvZA5R.png">
+				<td><b><%= c %></b></td>
 				<%
-				}
-				%>
-			</p>
-			<p>
-				<b>簡介：</b>
-			</p>
-			<p id="introduction"><%=escape(movie.getIntroduction())%></p>
-			<p>
-				<b>版本：</b><%=movie.getVersion()%></p>
-			<p>
-				<b>價格：</b><%=movie.getPrice()%></p>
-			<p>
-				<b>時長：</b><%=movie.getLength()%></p>
-			<p>
-				<b>上映時間：</b><%=movie.getOnDateString()%>～<%=movie.getOffDateString()%></p>
+			 } %>
+			<% for(int r=1; r<=rowNum; r++) { %>
+				</tr>
+				<tr>
+				<td><b><%= r %></b></td>
+				<% for(int c=1; c<=colNum; c++) { 
+					boolean available = false;
+					for(Seat seat: seats){
+						if(r == seat.getRowNum() && c == seat.getColNum()){
+							available = true;
+						}
+					}
+					%>
+					<td><input type="checkbox" name="<%= rowNum + "-" +colNum %>" <%= available?"":"disabled" %>></td>
+					<%
+				 } %>
+				</tr>
+			<% } %>
+		</table>
+		<div>
+			
 		</div>
-	</div>
-	<form action="#" method="post">
-		<input type="text" value="1" name="movie-id" style="display: none;"/>
-		<label for="showing-id">場次</label> <select name="showing-id"
-			id="showing-id">
-			<%
-			for (Showing showing : showings) {
-			%>
-			<option value="<%=showing.getId()%>">
-				<%=showing.getStartString()%>
-			</option>
-			<%
-			}
-			%>
-		</select>
-		<p>
-			<input type="submit" value="送出" id="submit-button">
-		</p>
+		<input type="submit">
 	</form>
 </body>
 

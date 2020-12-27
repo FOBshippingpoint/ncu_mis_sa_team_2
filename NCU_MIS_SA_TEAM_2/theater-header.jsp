@@ -46,6 +46,10 @@ public static String escape(String s) {
     return builder.toString();
 }
 %>
+<% if(request.getAttribute("message") != null) {
+	out.print(alert(request.getAttribute("message").toString()));
+}
+%>
 <%
 /** 設定會員角色（如果已登入） */
 	if (request.getAttribute("memberIsAdmin") != null) {
