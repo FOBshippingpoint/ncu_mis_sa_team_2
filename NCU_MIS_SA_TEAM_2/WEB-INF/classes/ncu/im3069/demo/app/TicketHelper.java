@@ -43,7 +43,7 @@ public class TicketHelper extends Helper {
 			pres = conn.prepareStatement(sql);
 			pres.setInt(1, seatId);
 			pres.setInt(2, showingId);
-			pres.setInt(2, orderId);
+			pres.setInt(3, orderId);
 
 			int affectedRows = pres.executeUpdate();
 

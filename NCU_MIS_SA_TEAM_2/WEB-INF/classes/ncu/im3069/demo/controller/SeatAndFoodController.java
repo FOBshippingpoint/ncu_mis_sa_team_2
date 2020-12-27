@@ -57,7 +57,6 @@ public class SeatAndFoodController extends HttpServlet {
 		for (int r = 1; r <= HallHelper.getHelper().getSeatsRowNum(); r++) {
 			for (int c = 1; c <= HallHelper.getHelper().getSeatsColNum(); c++) {
 				if (request.getParameter(r + "-" + c) != null) {
-					System.out.println(r+"-"+c+", ");
 					int seatId = SeatHelper.getHelper().getSeatByRowColNum(r, c).getId();
 					seats.add(new Seat(seatId, r, c));
 					Ticket ticket = new Ticket(seatId, showing.getId(), -1);
@@ -82,8 +81,8 @@ public class SeatAndFoodController extends HttpServlet {
 		ticketTotal += tickets.size() * movie.getPrice();
 
 		/** ！！order_id尚未設定 */
-		request.setAttribute("tickets", tickets);
-		request.setAttribute("foods", foods);
+		request.getSession().setAttribute("tickets", tickets);
+		request.getSession().setAttribute("foods", foods);
 
 		request.setAttribute("seats", seats);
 

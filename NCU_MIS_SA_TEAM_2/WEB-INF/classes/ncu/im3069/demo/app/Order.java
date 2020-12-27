@@ -8,6 +8,11 @@ public class Order {
 	private LocalDateTime purchased;
 	private LocalDateTime canceled;
 	
+	public Order(int memberId, LocalDateTime purchased) {
+		super();
+		this.memberId = memberId;
+		this.purchased = purchased;
+	}
 	public Order(int memberId, LocalDateTime purchased, LocalDateTime canceled) {
 		super();
 		this.memberId = memberId;

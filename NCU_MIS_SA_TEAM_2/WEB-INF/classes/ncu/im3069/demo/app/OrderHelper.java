@@ -1,6 +1,8 @@
 package ncu.im3069.demo.app;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 
 import ncu.im3069.demo.util.DBMgr;
@@ -22,7 +24,7 @@ public class OrderHelper extends Helper {
 		return ticketHelper;
 	}
 
-	public void create(Order order) {
+	public int create(Order order) {
 		/** 記錄實際執行之SQL指令 */
 		String exexcute_sql = "";
 		int resultId = -1;
@@ -35,18 +37,26 @@ public class OrderHelper extends Helper {
 					+ "VALUES (NULL, ?, ?, NULL);";
 
 			/** 取得所需之參數 */
-			int memberId = order.getId();
+			int memberId = order.getMemberId();
 			LocalDateTime purchased = order.getPurchased();
 
 			/** 將參數回填至SQL指令當中 */
-			pres = conn.prepareStatement(sql);
+			pres = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pres.setInt(1, memberId);
 			pres.setString(2, TimeUtil.format(purchased));
 
 			int affectedRows = pres.executeUpdate();
-
+			
 			if (affectedRows == 0) {
 				throw new SQLException("Creating order failed, no rows affected.");
+			}
+			
+			try (ResultSet generatedKeys = pres.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					resultId = generatedKeys.getInt(1);
+				} else {
+					throw new SQLException("Creating user failed, no ID obtained.");
+				}
 			}
 
 			/** 紀錄真實執行的SQL指令，並印出 **/
@@ -63,6 +73,8 @@ public class OrderHelper extends Helper {
 			/** 關閉連線並釋放所有資料庫相關之資源 **/
 			DBMgr.close(pres, conn);
 		}
+		
+		return resultId;
 	}
 
 }

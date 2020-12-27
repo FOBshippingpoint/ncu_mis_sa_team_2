@@ -16,20 +16,17 @@
 
 <%
 Showing showing = (Showing) request.getSession().getAttribute("showing");
-String start = showing.getStartString();
-String end = showing.getEndString();
-String hallName = HallHelper.getHelper().getHallById(showing.getHallId()).getName();
-
+ArrayList<Ticket> tickets = (ArrayList<Ticket>) request.getSession().getAttribute("tickets");
+ArrayList<Food> foods = (ArrayList<Food>) request.getSession().getAttribute("foods");
 Movie movie = (Movie) request.getSession().getAttribute("movie");
 
 ArrayList<Seat> seats = (ArrayList<Seat>) request.getAttribute("seats");
-
-ArrayList<Ticket> tickets = (ArrayList<Ticket>) request.getAttribute("tickets");
-
-ArrayList<Food> foods = (ArrayList<Food>) request.getAttribute("foods");
-
 int ticketTotal = (int) request.getAttribute("ticketTotal");
 int foodTotal = (int) request.getAttribute("foodTotal");
+
+String start = showing.getStartString();
+String end = showing.getEndString();
+String hallName = HallHelper.getHelper().getHallById(showing.getHallId()).getName();
 %>
 
 <html>
@@ -138,7 +135,7 @@ h1 {
 		總價：<%=ticketTotal + foodTotal %>元<br>
 		<hr>
 	</div>
-	<form action="#" method="post">
+	<form action="/NCU_MIS_SA/member-pages/checkout" method="post">
 		<label for="credit-card">信用卡卡號</label> <input type="text"
 			name="credit-card"> <br><label for="CVV">信用卡檢查碼（位於卡片背面）</label> <input
 			type="text" name="CVV">
