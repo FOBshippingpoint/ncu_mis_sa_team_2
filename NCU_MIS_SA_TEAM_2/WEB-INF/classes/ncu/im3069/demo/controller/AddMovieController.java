@@ -15,16 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ncu.im3069.demo.app.MovieHelper;
+import ncu.im3069.demo.app.Showing;
+import ncu.im3069.demo.app.ShowingHelper;
 import ncu.im3069.demo.app.Hall;
 import ncu.im3069.demo.app.Movie;
 
-@WebServlet("/api/add-movie.do")
+@WebServlet("/add-movie")
 @MultipartConfig
 public class AddMovieController extends HttpServlet {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/admin-pages/add-movie.jsp").forward(request, response);
+	}
 
 	private MovieHelper amh = (MovieHelper) MovieHelper.getHelper();
 

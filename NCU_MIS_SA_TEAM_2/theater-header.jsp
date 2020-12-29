@@ -85,7 +85,9 @@ if (request.getAttribute("memberIsAdmin") != null) {
 				|<%
 	}
 	%>
-	<a href="/NCU_MIS_SA/home.jsp">首頁</a>
+	<a href="/NCU_MIS_SA/home.jsp">首頁</a> |
+	<a href="/NCU_MIS_SA/add-movie">新增電影</a> |
+	<a href="/NCU_MIS_SA/movie-list">電影列表</a>
 	<%
 		// 已登入	
 	if (session.getAttribute("member") != null) {
