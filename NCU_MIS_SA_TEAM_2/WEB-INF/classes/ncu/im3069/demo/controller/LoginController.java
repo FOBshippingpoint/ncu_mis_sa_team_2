@@ -1,6 +1,7 @@
 package ncu.im3069.demo.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,8 +13,12 @@ import javax.servlet.http.HttpSession;
 
 import ncu.im3069.demo.app.LoginHelper;
 import ncu.im3069.demo.app.Member;
+import ncu.im3069.demo.app.Movie;
+import ncu.im3069.demo.app.MovieHelper;
+import ncu.im3069.demo.app.Showing;
+import ncu.im3069.demo.app.ShowingHelper;
 
-@WebServlet("/api/login.do")
+@WebServlet("/login")
 public class LoginController extends HttpServlet {
 	/**
 	 * 
@@ -21,6 +26,10 @@ public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private LoginHelper lh = (LoginHelper) LoginHelper.getHelper();
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("login.jsp").forward(request, response);
+	}
 
 	/**
      * 處理 Http Method 請求 POST 方法（新增資料）

@@ -38,7 +38,7 @@ public class MovieHelper extends Helper {
 
 		String exexcute_sql = "";
 		ResultSet rs = null;
-		
+
 		try {
 			/** 取得資料庫之連線 */
 			conn = DBMgr.getConnection();
@@ -79,7 +79,7 @@ public class MovieHelper extends Helper {
 			/** 關閉連線並釋放所有資料庫相關之資源 **/
 			DBMgr.close(rs, pres, conn);
 		}
-		
+
 		return movie;
 	}
 
@@ -260,6 +260,57 @@ public class MovieHelper extends Helper {
 			processDate = processDate.plusDays(1);
 		}
 
+	}
+
+	public ArrayList<Movie> getMovies() {
+		ArrayList<Movie> movies = new ArrayList<>();
+
+		/** 記錄實際執行之SQL指令 */
+		String exexcute_sql = "";
+		ResultSet rs;
+
+		try {
+			/** 取得資料庫之連線 */
+			conn = DBMgr.getConnection();
+			/** SQL指令 */
+			String sql = "SELECT * FROM `movies`";
+
+			/** 將參數回填至SQL指令當中 */
+			pres = conn.prepareStatement(sql);
+
+			rs = pres.executeQuery();
+
+			/** 紀錄真實執行的SQL指令，並印出 **/
+			exexcute_sql = pres.toString();
+			System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + ": " + exexcute_sql);
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String title = rs.getString("title");
+				String introduction = rs.getString("introduction");
+				int rating = rs.getInt("rating");
+				String version = rs.getString("version");
+				int price = rs.getInt("price");
+				int length = rs.getInt("length");
+				LocalDate onDate = rs.getDate("on_date").toLocalDate();
+				LocalDate offDate = rs.getDate("off_date").toLocalDate();
+
+				Movie movie = new Movie(id, title, introduction, rating, version, price, length, onDate, offDate);
+				movies.add(movie);
+			}
+
+		} catch (SQLException e) {
+			/** 印出JDBC SQL指令錯誤 **/
+			System.err.format("SQL State: %s\n%s\n%s", e.getErrorCode(), e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			/** 若錯誤則印出錯誤訊息 */
+			e.printStackTrace();
+		} finally {
+			/** 關閉連線並釋放所有資料庫相關之資源 **/
+			DBMgr.close(pres, conn);
+		}
+
+		return movies;
 	}
 
 }

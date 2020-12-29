@@ -44,9 +44,9 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 			</ol>
 		</ul>
 	</div>
-	<form action="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}" method="get">
-	<input type="submit" value="馬上訂票">
-	</form>
+	<a href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">
+		<input type="button" value="馬上訂票">
+	</a>
 </body>
 
 </html>

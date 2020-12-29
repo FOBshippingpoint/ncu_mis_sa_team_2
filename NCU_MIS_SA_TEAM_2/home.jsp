@@ -4,8 +4,8 @@
 
 <head>
 <%@ include file = "theater-header.jsp"%> 
-<title>ç·ä¸é»å½±è¨ç¥¨ç³»çµ±</title>
-<h1>é»å½±è¨ç¥¨ç³»çµ±</h1>
+<title>線上電影訂票系統</title>
+<h1>電影</h1>
 
 </head>
 

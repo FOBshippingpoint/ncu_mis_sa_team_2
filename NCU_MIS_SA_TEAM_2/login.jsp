@@ -5,10 +5,6 @@
 <head>
 <%@ include file="theater-header.jsp"%>
 <%
-	if (request.getAttribute("message") != null) {
-	out.print(alert(request.getAttribute("message").toString()));
-}
-
 if (session.getAttribute("member") != null) {
 	response.sendRedirect("/NCU_MIS_SA/home.jsp");
 }
@@ -64,7 +60,7 @@ if (session.getAttribute("member") != null) {
 </head>
 
 <body>
-	<form class="center" id="login-form" action="api/login.do"
+	<form class="center" id="login-form" action="/NCU_MIS_SA/login"
 		method="post">
 		<table>
 			<tr>
@@ -77,10 +73,6 @@ if (session.getAttribute("member") != null) {
 			</tr>
 		</table>
 		<br> <input type="submit" id="login-button" value="登入">
-		<p id="message"></p>
-		<div id="logout-div" style="display: none;">
-			<input type="button" id="logout-button" value="登出">
-		</div>
 	</form>
 </body>
 

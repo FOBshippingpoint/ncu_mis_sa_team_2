@@ -16,7 +16,7 @@ import ncu.im3069.demo.app.LoginHelper;
 import ncu.im3069.demo.app.Member;
 import ncu.im3069.tools.JsonReader;
 
-@WebServlet("/api/logout.do")
+@WebServlet("/logout")
 public class LogoutController extends HttpServlet {
 	/**
 	 * 

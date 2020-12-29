@@ -81,20 +81,20 @@ if (request.getAttribute("memberIsAdmin") != null) {
 	/** 已登入則顯示下列資訊 */
 	if (session.getAttribute("member") != null) {
 	out.print("歡迎回來！");
-	%> <span>${sessionScope.member.name}</span> <%=memberRole%> <span>
-				| </span> <%
+	%> ${sessionScope.member.name} <%=memberRole%> 
+				|<%
 	}
 	%>
-	</span> <a href="/NCU_MIS_SA/member-pages/booking?m=23">訂票</a>
-	</span> <a href="/NCU_MIS_SA/home.jsp">首頁</a>
+	<a href="/NCU_MIS_SA/home.jsp">首頁</a>
 	<%
 		// 已登入	
 	if (session.getAttribute("member") != null) {
-		out.print("| <a href=\"/NCU_MIS_SA/api/logout.do\">登出</a>");
+		out.print("| <a href=\"/NCU_MIS_SA/logout\">登出</a>");
 	} else {
-		out.print("| <a href=\"/NCU_MIS_SA/login.jsp\">登入</a>");
+		out.print("| <a href=\"/NCU_MIS_SA/login\">登入</a>");
 	}
 	%>
+	</span>
 </div>
 
 <%
