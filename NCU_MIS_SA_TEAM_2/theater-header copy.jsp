@@ -1,23 +1,18 @@
 <!-- 
 上方工具列，給其他檔案共用的jsp
  -->
-<!-- 設定UTF-8避免中文亂碼 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!-- 匯入Member類別 -->
 <%@page import="ncu.im3069.demo.app.Member"%>
 <%!
-/**
-實作alert，使用方式：out.print(alert(message));過
-*/
+/** 實作alert，我沒試過 */
 public String alert(String str) {
-	return "<script>alert(\"" + str + "\")</script>";
-}
+		return "<script>alert(\"" + str + "\")</script>";
+	}
 /** 宣告會員角色 */
-String memberRole = "";
-%>
-<%!
-/** 跳脫字元處理，如<轉為&lt; */
+	String memberRole = "";
+	%>
+	<%!
 public static String escape(String s) {
     StringBuilder builder = new StringBuilder();
     boolean previousWasASpace = false;
@@ -51,18 +46,22 @@ public static String escape(String s) {
     return builder.toString();
 }
 %>
-
+<% if(request.getAttribute("message") != null) {
+	out.print(alert(request.getAttribute("message").toString()));
+}
+%>
 <%
 /** 設定會員角色（如果已登入） */
-if (request.getAttribute("memberIsAdmin") != null) {
+	if (request.getAttribute("memberIsAdmin") != null) {
 	memberRole = (boolean) request.getAttribute("memberIsAdmin") ? "管理員" : "會員";
 }
 %>
+<!DOCTYPE html>
+<html>
 
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- JQuery -->
 <script src="/NCU_MIS_SA/statics/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-
 <style>
 .navbar {
 	background-color: gray;
@@ -74,32 +73,34 @@ if (request.getAttribute("memberIsAdmin") != null) {
 	color: white;
 }
 
-</style>
-
-<div class="navbar">
-	<span> <%
-	/** 已登入則顯示下列資訊 */
-	if (session.getAttribute("member") != null) {
-	out.print("歡迎回來！");
-	%> <span>${sessionScope.member.name}</span> <%=memberRole%> <span>
-				| </span> <%
-	}
-	%>
-	</span> <a href="/NCU_MIS_SA/member-pages/booking?m=23">訂票</a>
-	</span> <a href="/NCU_MIS_SA/home.jsp">首頁</a>
-	<%
-		// 已登入	
-	if (session.getAttribute("member") != null) {
-		out.print("| <a href=\"/NCU_MIS_SA/api/logout.do\">登出</a>");
-	} else {
-		out.print("| <a href=\"/NCU_MIS_SA/login.jsp\">登入</a>");
-	}
-	%>
-</div>
-
-<%
-/** 若request含有message屬性即會跳出警告 */
-if(request.getAttribute("message") != null) {
-	out.print(alert(request.getAttribute("message").toString()));
+body {
+	margin: 0;
+	padding: 0;
 }
-%>
+</style>
+</head>
+
+<body>
+	<div class="navbar">
+		<span> <%
+		/** 已登入則顯示下列資訊 */
+ 	if (session.getAttribute("member") != null) {
+ 	out.print("歡迎回來！");
+ %> <span>${sessionScope.member.name}</span> <%=memberRole%> <span>
+				| </span> <%
+ 	}
+ %>
+		</span> <a href="/NCU_MIS_SA/member-pages/booking.jsp?movie=23">訂票</a>
+		</span> <a href="/NCU_MIS_SA/home.jsp">首頁</a>
+		<%
+			// 已登入	
+		if (session.getAttribute("member") != null) {
+			out.print("| <a href=\"/NCU_MIS_SA/api/logout.do\">登出</a>");
+		} else {
+			out.print("| <a href=\"/NCU_MIS_SA/login.jsp\">登入</a>");
+		}
+		%>
+	</div>
+</body>
+
+</html>

@@ -21,28 +21,14 @@ import ncu.im3069.demo.app.Showing;
 import ncu.im3069.demo.app.ShowingHelper;
 import ncu.im3069.demo.app.TicketHelper;
 
-@WebServlet("/member-pages/booking")
-public class BookingController extends HttpServlet {
+@WebServlet("/browse")
+public class BrowseController extends HttpServlet {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private MovieHelper amh = (MovieHelper) MovieHelper.getHelper();
-
-	public ArrayList<String> getHallNames() {
-		return amh.getHallNames();
-	}
-
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getSession().getAttribute("member") == null) {
-			request.setAttribute("message", "請先登入");
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-			
-			return;
-		}
-		
 		String m = request.getParameter("m");
 		if (m == null) {
 			String message = "未提供電影編號或電影編號有誤";
@@ -57,9 +43,9 @@ public class BookingController extends HttpServlet {
 		ArrayList<Showing> showings = ShowingHelper.getHelper().getShowingsByMovie(movie);
 
 		request.setAttribute("showings", showings);
-		request.getSession().setAttribute("movie", movie);
+		request.setAttribute("movie", movie);
 		
-		request.getRequestDispatcher("booking.jsp").forward(request, response);
+		request.getRequestDispatcher("browse.jsp").forward(request, response);
 	}
 
 	/**
@@ -75,12 +61,12 @@ public class BookingController extends HttpServlet {
 		int showingId = Integer.parseInt(request.getParameter("showing-id"));
 		ArrayList<Seat> seats = TicketHelper.getHelper().getSeatsAvailableByShowingId(showingId);
 		request.getSession().setAttribute("showing", ShowingHelper.getHelper().getShowingById(showingId));
-
+		
 		request.setAttribute("seatsAvailable", seats);
 		request.setAttribute("rowNum", HallHelper.getHelper().getSeatsRowNum());
 		request.setAttribute("colNum", HallHelper.getHelper().getSeatsColNum());
 		request.setAttribute("foodTypes", FoodTypeHelper.getHelper().getFoodTypes());
-
+		
 		/** 動作結束後跳轉網頁 */
 		String destPage = "/member-pages/seat-and-food.jsp";
 
