@@ -20,7 +20,7 @@ import ncu.im3069.demo.app.ShowingHelper;
 import ncu.im3069.demo.app.Hall;
 import ncu.im3069.demo.app.Movie;
 
-@WebServlet("/add-movie")
+@WebServlet("/admin-pages/add-movie")
 @MultipartConfig
 public class AddMovieController extends HttpServlet {
 	/**

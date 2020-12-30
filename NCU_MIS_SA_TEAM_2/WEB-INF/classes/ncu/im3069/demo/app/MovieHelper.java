@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import ncu.im3069.demo.util.DBMgr;
+import ncu.im3069.demo.util.TimeUtil;
 
 public class MovieHelper extends Helper {
 
@@ -235,6 +236,95 @@ public class MovieHelper extends Helper {
 
 		return resultId;
 	}
+	
+	public void update(Movie movie) {
+		/** 記錄實際執行之SQL指令 */
+		String exexcute_sql = "";
+
+		try {
+			/** 取得資料庫之連線 */
+			conn = DBMgr.getConnection();
+			/** SQL指令 */
+			String sql = "UPDATE `movies` SET "
+					+ "`title` = ?, `introduction` = ?, `rating` = ?, "
+					+ "`version` = ?, `price` = ?, `length` = ?, "
+					+ "`on_date` = ?, `off_date` = ? WHERE `movies`.`id` = ?;";
+
+			/** 取得所需之參數 */
+			String title = movie.getTitle();
+			String introduction = movie.getIntroduction();
+			int rating = movie.getRating();
+			String version = movie.getVersion();
+			int price = movie.getPrice();
+			int length = movie.getLength();
+			LocalDate onDate = movie.getOnDate();
+			LocalDate offDate = movie.getOffDate();
+
+			/** 將參數回填至SQL指令當中 */
+			pres = conn.prepareStatement(sql);
+			pres.setString(1, title);
+			pres.setString(2, introduction);
+			pres.setInt(3, rating);
+			pres.setString(4, version);
+			pres.setInt(5, price);
+			pres.setInt(6, length);
+			pres.setObject(7, onDate);
+			pres.setObject(8, offDate);
+			pres.setInt(9, movie.getId());
+
+			int affectedRows = pres.executeUpdate();
+
+			if (affectedRows == 0) {
+				throw new SQLException("Creating user failed, no rows affected.");
+			}
+
+			/** 紀錄真實執行的SQL指令，並印出 **/
+			exexcute_sql = pres.toString();
+			System.out.println(pres);
+
+		} catch (SQLException e) {
+			/** 印出JDBC SQL指令錯誤 **/
+			System.err.format("SQL State: %s\n%s\n%s", e.getErrorCode(), e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			/** 若錯誤則印出錯誤訊息 */
+			e.printStackTrace();
+		} finally {
+			/** 關閉連線並釋放所有資料庫相關之資源 **/
+			DBMgr.close(pres, conn);
+		}
+	}
+	
+	public void delete(int movieId) {
+        /** 記錄實際執行之SQL指令 */
+        String exexcute_sql = "";
+        
+        try {
+            /** 取得資料庫之連線 */
+            conn = DBMgr.getConnection();
+            /** SQL指令 */
+            String sql = "DELETE FROM `movies` WHERE `movies`.`id` = ?";
+            
+            /** 將參數回填至SQL指令當中 */
+            pres = conn.prepareStatement(sql);
+            pres.setInt(1, movieId);
+            
+            pres.executeUpdate();
+
+            /** 紀錄真實執行的SQL指令，並印出 **/
+            exexcute_sql = pres.toString();
+            System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + ": " + exexcute_sql);
+
+        } catch (SQLException e) {
+            /** 印出JDBC SQL指令錯誤 **/
+            System.err.format("SQL State: %s\n%s\n%s", e.getErrorCode(), e.getSQLState(), e.getMessage());
+        } catch (Exception e) {
+            /** 若錯誤則印出錯誤訊息 */
+            e.printStackTrace();
+        } finally {
+            /** 關閉連線並釋放所有資料庫相關之資源 **/
+            DBMgr.close(pres, conn);
+        }
+    }
 
 	public void setShowingOfMovie(Movie movie, Hall hall) {
 		int length = movie.getLength();

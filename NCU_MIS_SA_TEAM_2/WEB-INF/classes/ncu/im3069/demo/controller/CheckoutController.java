@@ -47,7 +47,7 @@ public class CheckoutController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int memberId = ((Member)request.getSession().getAttribute("member")).getID();
+		int memberId = ((Member)request.getSession().getAttribute("member")).getId();
 		ArrayList<Ticket> tickets = (ArrayList<Ticket>)request.getSession().getAttribute("tickets");
 		ArrayList<Food> foods = (ArrayList<Food>) request.getSession().getAttribute("foods");		
 		

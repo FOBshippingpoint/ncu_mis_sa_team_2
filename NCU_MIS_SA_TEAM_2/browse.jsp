@@ -7,6 +7,7 @@
 
 <head>
 <%@ include file = "theater-header.jsp"%> 
+<%@ include file = "auth.jsp"%> 
 
 <%
 Movie movie = (Movie) request.getAttribute("movie");
@@ -24,11 +25,12 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 			<li><img src="/NCU_MIS_SA/images/<%= movie.getId() %>.png"></li>
 			<li>標題: ${movie.getTitle()}</li>
 			<li>評分：
-			<%	for (int i = 0; i < movie.getRating(); i++) {
+			<%	
+			for (int i = 0; i < movie.getRating(); i++) {
 			%>
 				<img src="https://i.imgur.com/fHvZA5R.png">
 			<%
-				}
+			}
 			%>
 			</li>
 			<li>簡介: <p><%= escape(movie.getIntroduction()) %></p></li>
@@ -36,12 +38,25 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 			<li>價格： ${movie.getLength()}</li>
 			<li>上映時間： ${movie.getOnDateString()}～${movie.getOffDateString()}</li>
 			<ol>
-			<% for (int i = 0; i < showings.size(); i++) {
+			<% 
+			for (int i = 0; i < showings.size(); i++) {
 			%>
 				<li><%= showings.get(i).getStartString() %>～<%= showings.get(i).getEndString() %></li>
-			<% }
+			<% 
+			}
 			%>
 			</ol>
+			<%
+			if(null!=authMember) {
+				if(authMember.isAdmin()) {
+			%>
+				<a href="/NCU_MIS_SA/admin-pages/edit-movie?m=${movie.getId()}">
+					<input type="button" value="編輯">
+				</a>
+			<%
+				}
+			}
+			%>
 		</ul>
 	</div>
 	<a href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">

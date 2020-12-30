@@ -41,13 +41,11 @@ ArrayList<Movie> movies = (ArrayList<Movie>) request.getAttribute("movies");
 </head>
 
 <body>
-<h1>Welcome Home</h1>
+<h1>電影列表</h1>
 	<div>
 		<form action="/NCU_MIS_SA/search" method="post">
-			<label for="search">
-			搜尋：
-			</label>
 			<input type="text" name="search">
+			<input type="submit" value="搜尋">
 		</form>
 	</div>
 	<div class="wrapper">

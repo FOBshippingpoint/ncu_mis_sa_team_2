@@ -5,13 +5,4 @@
 		<param-name>NCU_MIS_SA</param-name>
 		<param-value>C:\Users\Asus\git\ncu_mis_sa_team_2\NCU_MIS_SA_TEAM_2</param-value>
 	</context-param>
-	<servlet>
-		<servlet-name>member</servlet-name>
-		<servlet-class>ncu.im3069.demo.controller.MemberController</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>member</servlet-name>
-		<url-pattern>/api/member.do</url-pattern>
-	</servlet-mapping>
 </web-app>

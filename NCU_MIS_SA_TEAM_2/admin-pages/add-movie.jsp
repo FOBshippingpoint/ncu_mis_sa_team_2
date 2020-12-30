@@ -80,7 +80,7 @@
 	</head>
 
 	<body>
-		<form action="/NCU_MIS_SA/api/add-movie.do" method="post" enctype="multipart/form-data">
+		<form action="/NCU_MIS_SA/admin-pages/add-movie" method="post" enctype="multipart/form-data">
 			<div class="my-row">
 				<div class="my-column">
 					<label for="title">電影名稱：</label>

@@ -13,3 +13,8 @@
 /OrderListController.class
 /RefundController.class
 /SearchController.class
+/EditController.class
+/EditMovieController.class
+/MemberListController.class
+/RegisterController.class
+/EditMemberController.class

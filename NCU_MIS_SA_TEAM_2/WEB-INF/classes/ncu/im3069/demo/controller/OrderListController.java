@@ -30,7 +30,7 @@ public class OrderListController extends HttpServlet {
 		}
 
 		ArrayList<Order> orders = OrderHelper.getHelper().getOrders();
-		orders.removeIf(o -> o.getMemberId() != member.getID());
+		orders.removeIf(o -> o.getMemberId() != member.getId());
 
 		request.setAttribute("orders", orders);
 		
