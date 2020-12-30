@@ -114,7 +114,7 @@ public class TicketHelper extends Helper {
 		return seats;
 	}
 	
-	public ArrayList<Ticket> getTicketByOrderId(int orderId) {
+	public ArrayList<Ticket> getTicketsByOrderId(int orderId) {
 		ArrayList<Ticket> tickets = new ArrayList<>();
 
 		String exexcute_sql = "";
@@ -124,7 +124,7 @@ public class TicketHelper extends Helper {
 			/** 取得資料庫之連線 */
 			conn = DBMgr.getConnection();
 			/** SQL指令 */
-			String sql = "SELECT * FROM `orders` WHERE `id` = ?";
+			String sql = "SELECT * FROM `tickets` WHERE `order_id` = ?";
 
 			/** 將參數回填至SQL指令當中，若無則不用只需要執行 prepareStatement */
 			pres = conn.prepareStatement(sql);
@@ -136,7 +136,7 @@ public class TicketHelper extends Helper {
 			exexcute_sql = pres.toString();
 			System.out.println(Thread.currentThread().getStackTrace() + " " + exexcute_sql);
 
-			if (rs.next()) {
+			while (rs.next()) {
 				int id = rs.getInt("id");
 				int seatId = rs.getInt("seat_id");
 				int showingId = rs.getInt("showing_id");
@@ -157,6 +157,16 @@ public class TicketHelper extends Helper {
 		}
 
 		return tickets;
+	}
+	
+	public ArrayList<Seat> getSeatsByTickets(ArrayList<Ticket> tickets) {
+		ArrayList<Seat> seats = new ArrayList<>();
+		
+		for(Ticket t: tickets) {
+			seats.add(SeatHelper.getHelper().getSeatById(t.getSeatId()));
+		}
+		
+		return seats;
 	}
 
 }

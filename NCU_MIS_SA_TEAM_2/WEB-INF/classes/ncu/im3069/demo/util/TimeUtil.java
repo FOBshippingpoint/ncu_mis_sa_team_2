@@ -12,7 +12,7 @@ public class TimeUtil {
 		if (localDateTime == null) {
 			return null;
 		}
-		
+
 		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		return localDateTime.format(formatter);
 	}
@@ -21,13 +21,13 @@ public class TimeUtil {
 		if (localDate == null) {
 			return null;
 		}
-		
+
 		formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return localDate.format(formatter);
 	}
 
 	public static LocalDateTime toLocalDateTimeFromString(String localDateTime) {
-		if (localDateTime == null) {
+		if (localDateTime == null || localDateTime.equals("0000-00-00 00:00:00")) {
 			return null;
 		}
 

@@ -1,3 +1,7 @@
+<%@page import="ncu.im3069.demo.app.FoodHelper"%>
+<%@page import="ncu.im3069.demo.app.SeatHelper"%>
+<%@page import="ncu.im3069.demo.app.TicketHelper"%>
+<%@page import="ncu.im3069.demo.app.Order"%>
 <%@page import="ncu.im3069.demo.app.FoodTypeHelper"%>
 <%@page import="ncu.im3069.demo.app.HallHelper"%>
 <%@page import="ncu.im3069.demo.app.Food"%>
@@ -15,18 +19,7 @@
 	pageEncoding="UTF-8"%>
 
 <%
-Showing showing = (Showing) request.getSession().getAttribute("showing");
-ArrayList<Ticket> tickets = (ArrayList<Ticket>) request.getSession().getAttribute("tickets");
-ArrayList<Food> foods = (ArrayList<Food>) request.getSession().getAttribute("foods");
-Movie movie = (Movie) request.getSession().getAttribute("movie");
-
-ArrayList<Seat> seats = (ArrayList<Seat>) request.getAttribute("seats");
-int ticketTotal = (int) request.getAttribute("ticketTotal");
-int foodTotal = (int) request.getAttribute("foodTotal");
-
-String start = showing.getStartString();
-String end = showing.getEndString();
-String hallName = HallHelper.getHelper().getHallById(showing.getHallId()).getName();
+ArrayList<Order> orders = (ArrayList<Order>)request.getAttribute("orders");
 %>
 
 <html>
@@ -34,7 +27,7 @@ String hallName = HallHelper.getHelper().getHallById(showing.getHallId()).getNam
 <head>
 <%@ include file="../theater-header.jsp"%>
 <title>線上電影訂票系統</title>
-<h1>訂票</h1>
+<h1>訂票紀錄</h1>
 
 <script type="text/javascript">
 	Date.prototype.toDateInputValue = (function() {
@@ -115,33 +108,59 @@ h1 {
 </head>
 
 <body>
+	<%
+	for (Order o: orders) {
+		ArrayList<Ticket> tickets = TicketHelper.getHelper().getTicketsByOrderId(o.getId());
+		System.out.print("HEllo!!!!!!:"+tickets.size());
+		ArrayList<Food> foods = FoodHelper.getHelper().getFoodByOrderId(o.getId());
+		System.out.print("HEllo!!!!!!:"+foods.size());
+		int showingId = tickets.get(0).getShowingId();
+		Showing showing = ShowingHelper.getHelper().getShowingById(showingId);
+		Movie movie = MovieHelper.getHelper().getMovieById(showing.getMovieId());
+		String hallName = HallHelper.getHelper().getHallById(showing.getHallId()).getName();
+		String start = showing.getStartString();
+		String end = showing.getEndString();
+	%>
 	<div>
-		電影：<%=movie.getTitle()%><br> 
-		場次：<%=hallName%>廳；<%=start%>～<%=end%><br>
-		座位：<%
-	for (Seat seat : seats) {
-		out.print(seat.getRowNum() + "排" + seat.getColNum() + ", ");
-	}
-	%><br>
-		票價：<% out.print(movie.getPrice() + " x " + tickets.size() + " = " + ticketTotal); %>元<br>
-		餐點：<%
-	for (Food food : foods) {
-		FoodType foodType = FoodTypeHelper.getHelper().getFoodTypeById(food.getFoodTypeId());
-		out.print(foodType.getName() + food.getNum() + "份：" + foodType.getPrice() * food.getNum() + "元, ");
-	}
-	%><br>
-		餐點價：<%=foodTotal %>元<br>
-		<hr>
-		總價：<%=ticketTotal + foodTotal %>元<br>
-		<hr>
+		訂購時間：<%=o.getPurchasedString()%><br>
+		<% 
+		if(o.getCanceled() != null) { 
+		%>
+			取消時間：<%=o.getCanceledString()%><br>
+		<%
+		}
+		%>
+			<div>
+				電影：<%=movie.getTitle()%><br> 
+				場次：<%=hallName%>廳；<%=start%>～<%=end%><br>
+				座位：<%
+					for (Ticket t : tickets) {
+						Seat seat = SeatHelper.getHelper().getSeatById(t.getSeatId());
+						out.print(seat.getRowNum() + "排" + seat.getColNum() + ", ");
+					}
+					%><br>
+						票價：<% out.print(movie.getPrice() + " x " + tickets.size() + " = " + movie.getPrice() * tickets.size()); %>元<br>
+						餐點：<%
+					int foodTotal = 0;
+					for (Food f: foods) {
+						FoodType foodType = FoodTypeHelper.getHelper().getFoodTypeById(f.getFoodTypeId());
+						out.print(foodType.getName() + f.getNum() + "份：" + foodType.getPrice() * f.getNum() + "元, ");
+						foodTotal += foodType.getPrice() * f.getNum();
+					}
+					%><br>
+				餐點價：<%=foodTotal %>元<br>
+				<hr>
+				總價：<%=movie.getPrice() * tickets.size() + foodTotal %>元<br>
+				<hr>
+			</div>
+			<form action="/NCU_MIS_SA/member-pages/refund" method="post">
+				<input style="display: none;" type="text" value="<%=o.getId()%>" name="order-id">
+				<input type="submit" value="退票">
+			</form>
 	</div>
-	<form action="/NCU_MIS_SA/member-pages/checkout" method="post">
-		<label for="credit-card">信用卡卡號</label> <input type="text"
-			name="credit-card"> <br><label for="CVV">信用卡檢查碼（位於卡片背面）</label> <input
-			type="text" name="CVV">
-			<br>
-		<input type="submit" value="送出">
-	</form>
+	<%
+	} 
+	%>
 </body>
 
 </html>

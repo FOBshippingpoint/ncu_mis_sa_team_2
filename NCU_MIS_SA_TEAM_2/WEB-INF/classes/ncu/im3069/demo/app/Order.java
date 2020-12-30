@@ -2,6 +2,8 @@ package ncu.im3069.demo.app;
 
 import java.time.LocalDateTime;
 
+import ncu.im3069.demo.util.TimeUtil;
+
 public class Order {
 	private int id;
 	private int memberId;
@@ -41,11 +43,17 @@ public class Order {
 	public LocalDateTime getPurchased() {
 		return purchased;
 	}
+	public String getPurchasedString() {
+		return TimeUtil.format(getPurchased());
+	}
 	public void setPurchased(LocalDateTime purchased) {
 		this.purchased = purchased;
 	}
 	public LocalDateTime getCanceled() {
 		return canceled;
+	}
+	public String getCanceledString() {
+		return TimeUtil.format(getCanceled());
 	}
 	public void setCanceled(LocalDateTime canceled) {
 		this.canceled = canceled;

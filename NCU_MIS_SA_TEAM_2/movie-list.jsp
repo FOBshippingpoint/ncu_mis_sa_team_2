@@ -42,6 +42,14 @@ ArrayList<Movie> movies = (ArrayList<Movie>) request.getAttribute("movies");
 
 <body>
 <h1>Welcome Home</h1>
+	<div>
+		<form action="/NCU_MIS_SA/search" method="post">
+			<label for="search">
+			搜尋：
+			</label>
+			<input type="text" name="search">
+		</form>
+	</div>
 	<div class="wrapper">
 		<% 
 		for (Movie m: movies) {
