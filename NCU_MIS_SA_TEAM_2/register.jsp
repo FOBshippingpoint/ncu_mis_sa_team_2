@@ -5,12 +5,36 @@
 <head>
 <%@ include file = "theater-header.jsp"%> 
 <title>線上電影訂票系統</title>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#form').validate({
+			rules : {
+				name : "required",
+				email : {
+					required : true,
+					email : true
+				},
+				password : "required",
+			},
+			messages : {
+				name : "必填",
+				email : {
+					required : "必填",
+					email : "請檢查Email格式"
+				},
+				password : "必填"
+			}
+		})
+	});
+</script>
+
 </head>
 
 <body>
-<h1>註冊</h1>
-<div>
-	<form action="/NCU_MIS_SA/register" method="post">
+<div class="main">
+	<h1>註冊</h1>
+	<form action="/NCU_MIS_SA/register" method="post" id="form">
 		<label for="name">使用者名稱</label>
 		<input type="text" name="name"><br>
 		<label for="email">信箱</label>

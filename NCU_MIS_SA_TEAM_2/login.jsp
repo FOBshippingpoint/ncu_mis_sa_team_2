@@ -11,14 +11,7 @@ if (session.getAttribute("member") != null) {
 %>
 <title>線上電影訂票系統</title>
 <title>Login</title>
-<script src="statics/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-<!-- <script src="statics/js/js.cookie.min.js" crossorigin="anonymous"></script> -->
-<script
-	src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
-	integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg=="
-	crossorigin="anonymous"></script>
+
 
 <script type="text/javascript">
 	$(document).ready(function() {

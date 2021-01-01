@@ -5,12 +5,14 @@
 <head>
 <%@ include file = "theater-header.jsp"%> 
 <title>線上電影訂票系統</title>
-<h1>電影</h1>
 
 </head>
 
 <body>
-<h1>Welcome Home</h1>
+<div class="main">
+	<h1>電影</h1>
+	<h1>Welcome Home</h1>
+</div>
 </body>
 
 </html>

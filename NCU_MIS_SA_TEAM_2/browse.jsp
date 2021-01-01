@@ -7,7 +7,6 @@
 
 <head>
 <%@ include file = "theater-header.jsp"%> 
-<%@ include file = "auth.jsp"%> 
 
 <%
 Movie movie = (Movie) request.getAttribute("movie");
