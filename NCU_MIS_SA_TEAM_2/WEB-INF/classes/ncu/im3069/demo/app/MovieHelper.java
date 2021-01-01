@@ -191,8 +191,8 @@ public class MovieHelper extends Helper {
 			String version = movie.getVersion();
 			int price = movie.getPrice();
 			int length = movie.getLength();
-			LocalDate onDate = movie.getOnDate();
-			LocalDate offDate = movie.getOffDate();
+			String onDate = movie.getOnDateString();
+			String offDate = movie.getOffDateString();
 
 			/** 將參數回填至SQL指令當中 */
 			pres = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -202,8 +202,8 @@ public class MovieHelper extends Helper {
 			pres.setString(4, version);
 			pres.setInt(5, price);
 			pres.setInt(6, length);
-			pres.setObject(7, onDate);
-			pres.setObject(8, offDate);
+			pres.setString(7, onDate);
+			pres.setString(8, offDate);
 
 			int affectedRows = pres.executeUpdate();
 
@@ -257,8 +257,8 @@ public class MovieHelper extends Helper {
 			String version = movie.getVersion();
 			int price = movie.getPrice();
 			int length = movie.getLength();
-			LocalDate onDate = movie.getOnDate();
-			LocalDate offDate = movie.getOffDate();
+			String onDate = movie.getOnDateString();
+			String offDate = movie.getOffDateString();
 
 			/** 將參數回填至SQL指令當中 */
 			pres = conn.prepareStatement(sql);
@@ -268,8 +268,8 @@ public class MovieHelper extends Helper {
 			pres.setString(4, version);
 			pres.setInt(5, price);
 			pres.setInt(6, length);
-			pres.setObject(7, onDate);
-			pres.setObject(8, offDate);
+			pres.setString(7, onDate);
+			pres.setString(8, offDate);
 			pres.setInt(9, movie.getId());
 
 			int affectedRows = pres.executeUpdate();
@@ -336,7 +336,7 @@ public class MovieHelper extends Helper {
 		LocalDate offDate = movie.getOffDate();
 		LocalDate processDate = onDate;
 		final int breakTimeMinutes = 30;
-		for (int i = 0; i < ChronoUnit.DAYS.between(onDate, offDate); i++) {
+		for (int i = 0; i <= ChronoUnit.DAYS.between(onDate, offDate); i++) {
 			LocalDateTime dateTime = LocalDateTime.of(processDate, LocalTime.of(10, 0));
 			while (dateTime.plusMinutes(length + breakTimeMinutes)
 					.isBefore(LocalDateTime.of(processDate, LocalTime.of(23, 59, 59)))) {
@@ -344,7 +344,6 @@ public class MovieHelper extends Helper {
 				dateTime = dateTime.plusMinutes(length);
 				showing.setEnd(dateTime);
 				dateTime = dateTime.plusMinutes(breakTimeMinutes);
-//				System.out.println(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 				ShowingHelper.getHelper().create(showing);
 			}
 			processDate = processDate.plusDays(1);

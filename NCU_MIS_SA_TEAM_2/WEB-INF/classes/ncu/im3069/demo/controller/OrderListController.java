@@ -13,7 +13,7 @@ import ncu.im3069.demo.app.Member;
 import ncu.im3069.demo.app.Order;
 import ncu.im3069.demo.app.OrderHelper;
 
-@WebServlet("/member-pages/order-list")
+@WebServlet("/order-list")
 public class OrderListController extends HttpServlet {
 	/**
 	 * 
@@ -21,7 +21,7 @@ public class OrderListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("member");
 		if (member == null) {
@@ -30,10 +30,15 @@ public class OrderListController extends HttpServlet {
 		}
 
 		ArrayList<Order> orders = OrderHelper.getHelper().getOrders();
-		orders.removeIf(o -> o.getMemberId() != member.getId());
+
+		if (!member.isAdmin()) {
+			orders.removeIf(o -> o.getMemberId() != member.getId());
+		} else {
+			request.setAttribute("isAdmin", true);
+		}
 
 		request.setAttribute("orders", orders);
-		
+
 		request.getRequestDispatcher("order-list.jsp").forward(request, response);
 	}
 

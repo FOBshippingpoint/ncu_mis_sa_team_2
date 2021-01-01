@@ -28,7 +28,7 @@ public class BrowseController extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String m = request.getParameter("m");
 		if (m == null) {
 			String message = "未提供電影編號或電影編號有誤";
@@ -46,32 +46,6 @@ public class BrowseController extends HttpServlet {
 		request.setAttribute("movie", movie);
 		
 		request.getRequestDispatcher("browse.jsp").forward(request, response);
-	}
-
-	/**
-	 * 處理 Http Method 請求 POST 方法（新增資料）
-	 *
-	 * @param request  Servlet 請求之 HttpServletRequest 之 Request 物件（前端到後端）
-	 * @param response Servlet 回傳之 HttpServletResponse 之 Response 物件（後端到前端）
-	 * @throws ServletException the servlet exception
-	 * @throws IOException      Signals that an I/O exception has occurred.
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		int showingId = Integer.parseInt(request.getParameter("showing-id"));
-		ArrayList<Seat> seats = TicketHelper.getHelper().getSeatsAvailableByShowingId(showingId);
-		request.getSession().setAttribute("showing", ShowingHelper.getHelper().getShowingById(showingId));
-		
-		request.setAttribute("seatsAvailable", seats);
-		request.setAttribute("rowNum", HallHelper.getHelper().getSeatsRowNum());
-		request.setAttribute("colNum", HallHelper.getHelper().getSeatsColNum());
-		request.setAttribute("foodTypes", FoodTypeHelper.getHelper().getFoodTypes());
-		
-		/** 動作結束後跳轉網頁 */
-		String destPage = "/member-pages/seat-and-food.jsp";
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
-		dispatcher.forward(request, response);
 	}
 
 }

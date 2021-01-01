@@ -8,8 +8,8 @@
 		<%@ include file="../theater-header.jsp" %>
 		<%
 		if(request.getAttribute("message")!=null){
-				out.print(alert(request.getAttribute("message").toString()));
-				}
+			out.print(alert(request.getAttribute("message").toString()));
+		}
 		%>
 
 			<title>線上電影訂票系統</title>
@@ -116,7 +116,7 @@
 				</div>
 				<div class="my-column">
 					<label for="cover">電影封面</label>
-					<input type="file" id="cover" name="cover" accept="image/*" onchange="readURL(this);">
+					<input type="file" id="cover" name="cover" accept="image/png" onchange="readURL(this);">
 					<img src="" alt="預覽" id="cover-preview">
 				</div>
 			</div>

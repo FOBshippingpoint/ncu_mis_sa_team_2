@@ -4,29 +4,24 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Enumeration;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ncu.im3069.demo.app.FoodType;
-import ncu.im3069.demo.app.FoodTypeHelper;
 import ncu.im3069.demo.app.Hall;
 import ncu.im3069.demo.app.HallHelper;
-import ncu.im3069.demo.app.Member;
 import ncu.im3069.demo.app.Movie;
 import ncu.im3069.demo.app.MovieHelper;
-import ncu.im3069.demo.app.Seat;
-import ncu.im3069.demo.app.Showing;
 import ncu.im3069.demo.app.ShowingHelper;
-import ncu.im3069.demo.app.TicketHelper;
 
 @WebServlet("/admin-pages/edit-movie")
+@MultipartConfig
 public class EditMovieController extends HttpServlet {
 	/**
 	 * 
@@ -34,13 +29,36 @@ public class EditMovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		int movieId = Integer.parseInt(request.getParameter("m"));
+	
+		Movie movie = MovieHelper.getHelper().getMovieById(movieId);
+		String hallName = HallHelper.getHelper()
+				.getHallById(ShowingHelper.getHelper().getShowingsByMovie(movieId).get(0).getHallId()).getName();
+		request.getSession().setAttribute("movie", movie);
+		request.setAttribute("hallName", hallName);
+		request.getRequestDispatcher("/admin-pages/edit-movie.jsp").forward(request, response);
+	}
+
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		
 		if (null != request.getParameter("delete")) {
 			doDelete(request, response);
 			return;
 		}
+//		Enumeration<String> parameterNames = request.getParameterNames();
+//
+//		while (parameterNames.hasMoreElements()) {
+//
+//			String paramName = parameterNames.nextElement();
+//
+//			System.out.println(paramName);
+//		}
 
 
 		Movie movie = (Movie) request.getSession().getAttribute("movie");
@@ -81,32 +99,19 @@ public class EditMovieController extends HttpServlet {
 
 		request.setAttribute("message", "更新成功");
 		/** 動作結束後跳轉網頁 */
-		String destPage = "/admin-pages/edit-movie?m=" + movie.getId();
+		String destPage = "/movie-list";
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
 		dispatcher.forward(request, response);
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		int movieId = Integer.parseInt(request.getParameter("m"));
-
-		Movie movie = MovieHelper.getHelper().getMovieById(movieId);
-		String hallName = HallHelper.getHelper()
-				.getHallById(ShowingHelper.getHelper().getShowingsByMovie(movieId).get(0).getHallId()).getName();
-		request.getSession().setAttribute("movie", movie);
-		request.setAttribute("hallName", hallName);
-		request.getRequestDispatcher("/admin-pages/edit-movie.jsp").forward(request, response);
-	}
-
-	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int movieId = Integer.parseInt(request.getParameter("m"));
-		MovieHelper.getHelper().delete(movieId);
+		Movie movie = (Movie) request.getSession().getAttribute("movie");
+		MovieHelper.getHelper().delete(movie.getId());
 
-		request.getRequestDispatcher("/browse").forward(request, response);
+		request.getRequestDispatcher("/movie-list").forward(request, response);
 	}
 
 }

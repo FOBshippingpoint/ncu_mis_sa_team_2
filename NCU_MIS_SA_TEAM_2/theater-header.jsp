@@ -87,6 +87,7 @@ if (request.getAttribute("memberIsAdmin") != null) {
 	%>
 	<a href="/NCU_MIS_SA/home.jsp">首頁</a> |
 	<a href="/NCU_MIS_SA/register">註冊</a> |
+	<a href="/NCU_MIS_SA/order-list">訂單列表</a> |
 	<a href="/NCU_MIS_SA/admin-pages/member-list">使用者列表</a> |
 	<a href="/NCU_MIS_SA/edit-member">更改使用者資料</a> |
 	<a href="/NCU_MIS_SA/admin-pages/add-movie">新增電影</a> |
