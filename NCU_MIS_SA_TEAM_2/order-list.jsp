@@ -27,7 +27,7 @@ ArrayList<Order> orders = (ArrayList<Order>)request.getAttribute("orders");
 <head>
 <%@ include file="../theater-header.jsp"%>
 <title>線上電影訂票系統</title>
-<h1>訂票紀錄</h1>
+
 
 <script type="text/javascript">
 	Date.prototype.toDateInputValue = (function() {
@@ -121,6 +121,8 @@ h1 {
 </head>
 
 <body>
+<div class="main">
+<h1>訂票紀錄</h1>
 	<%
 	for (Order o: orders) {
 		ArrayList<Ticket> tickets = TicketHelper.getHelper().getTicketsByOrderId(o.getId());
@@ -199,6 +201,7 @@ h1 {
 	<%
 	} 
 	%>
+</div>
 </body>
 
 </html>

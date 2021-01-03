@@ -18,22 +18,22 @@ if(null != session.getAttribute("editMember")) {
 </head>
 
 <body>
-<h1>註冊</h1>
-<div>
+<div class="main">
+<h1>編輯會員資料</h1>
 	<%
 	// 
 	if(member.isAdmin()) {
 	%>
 		<form action="/NCU_MIS_SA/edit-member" method="post">
 			<label for="name">使用者名稱</label>
-			<input type="text" name="name" value="<%=editMember.getName()%>"><br>
+			<input type="text" name="name" value="<%=editMember.getName()%>" required><br>
 			<label for="email">信箱</label>
-			<input type="text" name="email" value="<%=editMember.getEmail()%>"><br>
+			<input type="text" name="email" value="<%=editMember.getEmail()%>" required><br>
 			<% 
 			if(member.getId() == editMember.getId()) {
 			%>
 			<label for="password">密碼</label>
-			<input type="password" name="password" value="<%=editMember.getPassword()%>"><br>
+			<input type="password" name="password" value="<%=editMember.getPassword()%>" required><br>
 			<%
 			}
 			%>

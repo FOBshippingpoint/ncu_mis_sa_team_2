@@ -105,6 +105,8 @@ h1 {
 </head>
 
 <body>
+<div class="main">
+<h1>選擇座位與餐點</h1>
 	<form action="/NCU_MIS_SA/member-pages/seat-and-food" method="post">
 		<input style="display: none;" name="showingId" value="<%= request.getAttribute("showingId") %>">
 		<input style="display: none;" name="movieId" value="<%= request.getAttribute("movieId") %>">
@@ -140,6 +142,7 @@ h1 {
 		<% } %>
 		<input type="submit">
 	</form>
+</div>
 </body>
 
 </html>

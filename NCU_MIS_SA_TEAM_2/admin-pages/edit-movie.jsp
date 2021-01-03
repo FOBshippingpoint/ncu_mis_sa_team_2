@@ -15,7 +15,6 @@ String hallName = (String) request.getAttribute("hallName");
 %>
 
 <title>線上電影訂票系統</title>
-<h1>編輯電影</h1>
 
 <script type="text/javascript">
 	Date.prototype.toDateInputValue = (function() {
@@ -81,17 +80,19 @@ h1 {
 </head>
 
 <body>
+<div class="main">
+<h1>編輯電影</h1>
 	<form action="/NCU_MIS_SA/admin-pages/edit-movie" method="post"	enctype="multipart/form-data">
 		<div class="my-row">
 			<div class="my-column">
 				<label for="title">電影名稱：</label>
-				<input type="text" name="title" value="<%=movie.getTitle()%>">
+				<input type="text" name="title" value="<%=movie.getTitle()%>" required>
 				<label for="introduction">電影簡介：</label>
-				<textarea name="introduction" rows="10" cols="50"><%=movie.getIntroduction()%></textarea>
+				<textarea name="introduction" rows="10" cols="50" required><%=movie.getIntroduction()%></textarea>
 				<label for="length">電影長度（分鐘）：</label>
-				<input type="number" min="0" step="1" name="length" value="<%=movie.getLength()%>">
+				<input type="number" min="1" max="10000" step="1" name="length" value="<%=movie.getLength()%>" required>
 				<label for="rating">評分（1～5）：</label>
-				<input type="number" min="1" max="5" step="1" name="rating" value="<%=movie.getRating()%>">
+				<input type="number" min="1" max="5" step="1" name="rating" value="<%=movie.getRating()%>" required>
 			</div>
 			<div class="my-column">
 				<label for="version">上映版本：</label>
@@ -104,11 +105,11 @@ h1 {
 						selected="selected" <%}%>>3D</option>
 				</select>
 				<label for="price">價格：</label> 
-				<input type="number" min="0" step="10" id="price" name="price" value="${movie.getPrice()}">
+				<input type="number" min="0" max="10000" step="10" id="price" name="price" value="<%=movie.getPrice()%>" required>
 				<label for="on-date">上映日期（含）：</label> 
-				<input type="date" name="on-date" value="<%=movie.getOnDateString()%>">
+				<input type="date" name="on-date" value="<%=movie.getOnDateString()%>" required>
 				<label for="off-date">下檔日期（含）：</label>
-				<input type="date" name="off-date" value="<%=movie.getOffDateString()%>">
+				<input type="date" name="off-date" value="<%=movie.getOffDateString()%>" required>
 				<label for="hall">上映影廳</label>
 				<select name="hall">
 					<%
@@ -133,6 +134,7 @@ h1 {
 		<input style="display: none;" type="text" name="delete">
 		<input type="submit" value="刪除">
 	</form>
+</div>
 </body>
 
 </html>

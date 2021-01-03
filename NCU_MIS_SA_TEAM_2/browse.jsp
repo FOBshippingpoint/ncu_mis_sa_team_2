@@ -18,49 +18,51 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 </head>
 
 <body>
-	<h1>瀏覽電影</h1>
-	<div>
-		<ul>
-			<li><img src="/NCU_MIS_SA/images/<%= movie.getId() %>.png"></li>
-			<li>標題: ${movie.getTitle()}</li>
-			<li>評分：
-			<%	
-			for (int i = 0; i < movie.getRating(); i++) {
-			%>
-				<img src="https://i.imgur.com/fHvZA5R.png">
-			<%
-			}
-			%>
-			</li>
-			<li>簡介: <p><%= escape(movie.getIntroduction()) %></p></li>
-			<li>版本： ${movie.getVersion()}</li>
-			<li>價格： ${movie.getLength()}</li>
-			<li>上映時間： ${movie.getOnDateString()}～${movie.getOffDateString()}</li>
-			<ol>
-			<% 
-			for (int i = 0; i < showings.size(); i++) {
-			%>
-				<li><%= showings.get(i).getStartString() %>～<%= showings.get(i).getEndString() %></li>
-			<% 
-			}
-			%>
-			</ol>
-			<%
-			if(null!=authMember) {
-				if(authMember.isAdmin()) {
-			%>
-				<a href="/NCU_MIS_SA/admin-pages/edit-movie?m=${movie.getId()}">
-					<input type="button" value="編輯">
-				</a>
-			<%
+	<div class="main">
+		<h1>瀏覽電影</h1>
+		<div>
+			<ul>
+				<li><img src="/NCU_MIS_SA/images/<%= movie.getId() %>.png"></li>
+				<li>標題: ${movie.getTitle()}</li>
+				<li>評分：
+				<%	
+				for (int i = 0; i < movie.getRating(); i++) {
+				%>
+					<img src="https://i.imgur.com/fHvZA5R.png">
+				<%
 				}
-			}
-			%>
-		</ul>
+				%>
+				</li>
+				<li>簡介: <p><%= escape(movie.getIntroduction()) %></p></li>
+				<li>版本： ${movie.getVersion()}</li>
+				<li>價格： ${movie.getLength()}</li>
+				<li>上映時間： ${movie.getOnDateString()}～${movie.getOffDateString()}</li>
+				<ol>
+				<% 
+				for (int i = 0; i < showings.size(); i++) {
+				%>
+					<li><%= showings.get(i).getStartString() %>～<%= showings.get(i).getEndString() %></li>
+				<% 
+				}
+				%>
+				</ol>
+				<%
+				if(null!=authMember) {
+					if(authMember.isAdmin()) {
+				%>
+					<a href="/NCU_MIS_SA/admin-pages/edit-movie?m=${movie.getId()}">
+						<input type="button" value="編輯">
+					</a>
+				<%
+					}
+				}
+				%>
+			</ul>
+		</div>
+		<a href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">
+			<input type="button" value="馬上訂票">
+		</a>
 	</div>
-	<a href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">
-		<input type="button" value="馬上訂票">
-	</a>
 </body>
 
 </html>

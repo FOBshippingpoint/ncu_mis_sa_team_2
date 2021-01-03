@@ -12,8 +12,7 @@ if (session.getAttribute("member") != null) {
 <title>線上電影訂票系統</title>
 <title>Login</title>
 
-
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(document).ready(function() {
 		$('#login-form').validate({
 			rules : {
@@ -32,7 +31,7 @@ if (session.getAttribute("member") != null) {
 			}
 		})
 	});
-</script>
+</script> -->
 
 <style>
 .center {
@@ -53,20 +52,23 @@ if (session.getAttribute("member") != null) {
 </head>
 
 <body>
+	<div class="main">
+	<h1>登入</h1>
 	<form class="center" id="login-form" action="/NCU_MIS_SA/login"
 		method="post">
 		<table>
 			<tr>
 				<td align="right"><label for="emial">伊媚兒：</label></td>
-				<td><input type="email" id="email" name="email"></td>
+				<td><input type="email" id="email" name="email" required></td>
 			</tr>
 			<tr>
 				<td align="right"><label for="password">密碼：</label></td>
-				<td><input type="password" id="password" name="password"></td>
+				<td><input type="password" id="password" name="password" required></td>
 			</tr>
 		</table>
 		<br> <input type="submit" id="login-button" value="登入">
 	</form>
+	</div>
 </body>
 
 </html>

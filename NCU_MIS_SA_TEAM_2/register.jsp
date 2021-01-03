@@ -5,7 +5,7 @@
 <head>
 <%@ include file = "theater-header.jsp"%> 
 <title>線上電影訂票系統</title>
-
+<!-- 
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#form').validate({
@@ -28,6 +28,7 @@
 		})
 	});
 </script>
+-->
 
 </head>
 
@@ -36,11 +37,11 @@
 	<h1>註冊</h1>
 	<form action="/NCU_MIS_SA/register" method="post" id="form">
 		<label for="name">使用者名稱</label>
-		<input type="text" name="name"><br>
+		<input type="text" name="name" required><br>
 		<label for="email">信箱</label>
-		<input type="text" name="email"><br>
+		<input type="text" name="email" required><br>
 		<label for="password">密碼</label>
-		<input type="password" name="password"><br>
+		<input type="password" name="password" required><br>
 		<% 
 		if(null != request.getAttribute("isAdmin")) {
 		%>

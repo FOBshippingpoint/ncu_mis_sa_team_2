@@ -12,6 +12,7 @@ ArrayList<Member> members = (ArrayList<Member>) request.getAttribute("members");
 </head>
 
 <body>
+<div class="main">
 <h1>使用者列表</h1>
 <div>
 	<table>
@@ -35,6 +36,7 @@ ArrayList<Member> members = (ArrayList<Member>) request.getAttribute("members");
 		} 
 		%>
 	</table>
+</div>
 </div>
 </body>
 

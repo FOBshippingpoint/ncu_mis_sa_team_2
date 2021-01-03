@@ -41,6 +41,7 @@ ArrayList<Movie> movies = (ArrayList<Movie>) request.getAttribute("movies");
 </head>
 
 <body>
+<div class="main">
 <h1>電影列表</h1>
 	<div>
 		<form action="/NCU_MIS_SA/search" method="post">
@@ -68,6 +69,7 @@ ArrayList<Movie> movies = (ArrayList<Movie>) request.getAttribute("movies");
 		}
 		%>
 	</div>
+</div>
 </body>
 
 </html>

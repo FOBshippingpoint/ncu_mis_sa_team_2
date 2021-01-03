@@ -102,6 +102,8 @@ h1 {
 </head>
 
 <body>
+<div class="main">
+<h1>訂票</h1>
 	<div>
 		<div class="movie-container">
 			<b id="title">～${movie.getTitle()}～</b>
@@ -149,6 +151,7 @@ h1 {
 			<input type="submit" value="送出" id="submit-button">
 		</p>
 	</form>
+	</div>
 </body>
 
 </html>

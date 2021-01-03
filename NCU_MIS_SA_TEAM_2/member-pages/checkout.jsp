@@ -115,33 +115,38 @@ h1 {
 </head>
 
 <body>
-	<div>
-		電影：<%=movie.getTitle()%><br> 
-		場次：<%=hallName%>廳；<%=start%>～<%=end%><br>
-		座位：<%
-	for (Seat seat : seats) {
-		out.print(seat.getRowNum() + "排" + seat.getColNum() + ", ");
-	}
-	%><br>
-		票價：<% out.print(movie.getPrice() + " x " + tickets.size() + " = " + ticketTotal); %>元<br>
-		餐點：<%
-	for (Food food : foods) {
-		FoodType foodType = FoodTypeHelper.getHelper().getFoodTypeById(food.getFoodTypeId());
-		out.print(foodType.getName() + food.getNum() + "份：" + foodType.getPrice() * food.getNum() + "元, ");
-	}
-	%><br>
-		餐點價：<%=foodTotal %>元<br>
-		<hr>
-		總價：<%=ticketTotal + foodTotal %>元<br>
-		<hr>
+	<div class="main">
+		<h1>結帳</h1>
+		<div>
+			電影：<%=movie.getTitle()%><br> 
+			場次：<%=hallName%>廳；<%=start%>～<%=end%><br>
+			座位：<%
+		for (Seat seat : seats) {
+			out.print(seat.getRowNum() + "排" + seat.getColNum() + ", ");
+		}
+		%><br>
+			票價：<% out.print(movie.getPrice() + " x " + tickets.size() + " = " + ticketTotal); %>元<br>
+			餐點：<%
+		for (Food food : foods) {
+			FoodType foodType = FoodTypeHelper.getHelper().getFoodTypeById(food.getFoodTypeId());
+			out.print(foodType.getName() + food.getNum() + "份：" + foodType.getPrice() * food.getNum() + "元, ");
+		}
+		%><br>
+			餐點價：<%=foodTotal %>元<br>
+			<hr>
+			總價：<%=ticketTotal + foodTotal %>元<br>
+			<hr>
+		</div>
+		<form action="/NCU_MIS_SA/member-pages/checkout" method="post">
+			<label for="credit-card">信用卡卡號</label> 
+			<input type="text" placeholder="xxxx-xxxx-xxxx-xxxx" name="credit-card" required pattern="^4\d{3}([\ \-]?)\d{4}\1\d{4}\1\d{4}$">
+			<input type="text" placeholder="到期月（01-12）" name="card-month" required pattern="0[1-9]|1[0-2]">
+			<input type="text" placeholder="到期年（00-99）" name="card-year" required pattern="[0-9][0-9]"><br>
+			<label for="CVV">信用卡驗證碼（位於卡片背面）</label>
+			<input type="text" name="CVV" required pattern="\d{3}"><br>
+			<input type="submit" value="送出">
+		</form>
 	</div>
-	<form action="/NCU_MIS_SA/member-pages/checkout" method="post">
-		<label for="credit-card">信用卡卡號</label> <input type="text"
-			name="credit-card"> <br><label for="CVV">信用卡檢查碼（位於卡片背面）</label> <input
-			type="text" name="CVV">
-			<br>
-		<input type="submit" value="送出">
-	</form>
 </body>
 
 </html>
