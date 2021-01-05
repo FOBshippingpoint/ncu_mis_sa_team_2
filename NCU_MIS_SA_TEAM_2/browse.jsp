@@ -15,15 +15,34 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 <title>
 	線上電影訂票系統
 </title>
+
+<style>
+	.cover-holder {
+		max-width: 300px;
+	}
+	
+	.cover-holder img{
+		width: 100%; 
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	}
+	
+	.wrapper {
+		display: grid;
+		grid-template-columns: 300px 1fr 1fr 1fr;
+	}
+</style>
+
 </head>
 
 <body>
 	<div class="main">
 		<h1>瀏覽電影</h1>
-		<div>
+		<div class="wrapper">
+			<div class="cover-holder">
+				<img src="/NCU_MIS_SA/images/<%= movie.getId() %>.png">
+			</div>
 			<ul>
-				<li><img src="/NCU_MIS_SA/images/<%= movie.getId() %>.png"></li>
-				<li>標題: ${movie.getTitle()}</li>
+				<li>標題：${movie.getTitle()}</li>
 				<li>評分：
 				<%	
 				for (int i = 0; i < movie.getRating(); i++) {
@@ -36,6 +55,8 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 				<li>簡介: <p><%= escape(movie.getIntroduction()) %></p></li>
 				<li>版本： ${movie.getVersion()}</li>
 				<li>價格： ${movie.getLength()}</li>
+			</ul>
+			<ul>
 				<li>上映時間： ${movie.getOnDateString()}～${movie.getOffDateString()}</li>
 				<ol>
 				<% 
@@ -46,7 +67,9 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 				}
 				%>
 				</ol>
-				<%
+			</ul>
+			<div>
+			<%
 				if(null!=authMember) {
 					if(authMember.isAdmin()) {
 				%>
@@ -57,11 +80,11 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 					}
 				}
 				%>
-			</ul>
+				<a href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">
+					<input type="button" value="馬上訂票">
+				</a>
+			</div>
 		</div>
-		<a href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">
-			<input type="button" value="馬上訂票">
-		</a>
 	</div>
 </body>
 

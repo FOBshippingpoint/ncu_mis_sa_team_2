@@ -59,8 +59,8 @@ public class MemberHelper extends Helper {
 				String name = rs.getString("name");
 				String email = rs.getString("email");
 				String password = rs.getString("password");
-				boolean isAdmin= rs.getBoolean("is_admin");
-				
+				boolean isAdmin = rs.getBoolean("is_admin");
+
 				member = new Member(searchId, name, email, password, isAdmin);
 			}
 
@@ -140,7 +140,7 @@ public class MemberHelper extends Helper {
 
 		return resultId;
 	}
-	
+
 	public void update(Member member) {
 		/** 記錄實際執行之SQL指令 */
 		String exexcute_sql = "";
@@ -149,26 +149,22 @@ public class MemberHelper extends Helper {
 			/** 取得資料庫之連線 */
 			conn = DBMgr.getConnection();
 			/** SQL指令 */
-			String sql = "UPDATE `members` SET "
-					+ "`name` = ?, "
-					+ "`email` = ?, "
-					+ "`password` = ?, "
-					+ "`is_admin` = ? "
-					+ "WHERE `members`.`id` = ?;";
+			String sql = "UPDATE `members` SET " + "`name` = ?, " + "`email` = ?, " + "`password` = ?, "
+					+ "`is_admin` = ? " + "WHERE `members`.`id` = ?;";
 
 			String name = member.getName();
 			String email = member.getEmail();
 			String password = member.getPassword();
 			boolean isAdmin = member.isAdmin();
 			int id = member.getId();
-			
+
 			pres = conn.prepareStatement(sql);
 			pres.setString(1, name);
 			pres.setString(2, email);
 			pres.setString(3, password);
 			pres.setBoolean(4, isAdmin);
 			pres.setInt(5, id);
-			
+
 			int affectedRows = pres.executeUpdate();
 
 			if (affectedRows == 0) {
@@ -190,38 +186,38 @@ public class MemberHelper extends Helper {
 			DBMgr.close(pres, conn);
 		}
 	}
-	
+
 	public void delete(int memberId) {
-        /** 記錄實際執行之SQL指令 */
-        String exexcute_sql = "";
-        
-        try {
-            /** 取得資料庫之連線 */
-            conn = DBMgr.getConnection();
-            /** SQL指令 */
-            String sql = "DELETE FROM `members` WHERE `members`.`id` = ?";
-            
-            /** 將參數回填至SQL指令當中 */
-            pres = conn.prepareStatement(sql);
-            pres.setInt(1, memberId);
-            
-            pres.executeUpdate();
+		/** 記錄實際執行之SQL指令 */
+		String exexcute_sql = "";
 
-            /** 紀錄真實執行的SQL指令，並印出 **/
-            exexcute_sql = pres.toString();
-            System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + ": " + exexcute_sql);
+		try {
+			/** 取得資料庫之連線 */
+			conn = DBMgr.getConnection();
+			/** SQL指令 */
+			String sql = "DELETE FROM `members` WHERE `members`.`id` = ?";
 
-        } catch (SQLException e) {
-            /** 印出JDBC SQL指令錯誤 **/
-            System.err.format("SQL State: %s\n%s\n%s", e.getErrorCode(), e.getSQLState(), e.getMessage());
-        } catch (Exception e) {
-            /** 若錯誤則印出錯誤訊息 */
-            e.printStackTrace();
-        } finally {
-            /** 關閉連線並釋放所有資料庫相關之資源 **/
-            DBMgr.close(pres, conn);
-        }
-    }
+			/** 將參數回填至SQL指令當中 */
+			pres = conn.prepareStatement(sql);
+			pres.setInt(1, memberId);
+
+			pres.executeUpdate();
+
+			/** 紀錄真實執行的SQL指令，並印出 **/
+			exexcute_sql = pres.toString();
+			System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + ": " + exexcute_sql);
+
+		} catch (SQLException e) {
+			/** 印出JDBC SQL指令錯誤 **/
+			System.err.format("SQL State: %s\n%s\n%s", e.getErrorCode(), e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			/** 若錯誤則印出錯誤訊息 */
+			e.printStackTrace();
+		} finally {
+			/** 關閉連線並釋放所有資料庫相關之資源 **/
+			DBMgr.close(pres, conn);
+		}
+	}
 
 	public ArrayList<Member> getMembers() {
 		ArrayList<Member> members = new ArrayList<>();
@@ -250,8 +246,8 @@ public class MemberHelper extends Helper {
 				String name = rs.getString("name");
 				String email = rs.getString("email");
 				String password = rs.getString("password");
-				boolean isAdmin= rs.getBoolean("is_admin");
-				
+				boolean isAdmin = rs.getBoolean("is_admin");
+
 				Member member = new Member(id, name, email, password, isAdmin);
 				members.add(member);
 			}
@@ -268,6 +264,17 @@ public class MemberHelper extends Helper {
 		}
 
 		return members;
+	}
+
+	public boolean checkEmailisFine(String email) {
+		boolean ok = true;
+		for (Member m : getMembers()) {
+			if (m.getEmail().equals(email)) {
+				ok = false;
+				break;
+			}
+		}
+		return ok;
 	}
 
 }

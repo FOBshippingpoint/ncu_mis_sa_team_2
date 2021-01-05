@@ -12,27 +12,6 @@ if (session.getAttribute("member") != null) {
 <title>線上電影訂票系統</title>
 <title>Login</title>
 
-<!-- <script type="text/javascript">
-	$(document).ready(function() {
-		$('#login-form').validate({
-			rules : {
-				email : {
-					required : true,
-					email : true
-				},
-				password : "required",
-			},
-			messages : {
-				email : {
-					required : "必填",
-					email : "請檢查Email格式"
-				},
-				password : "必填"
-			}
-		})
-	});
-</script> -->
-
 <style>
 .center {
 	display: flex;

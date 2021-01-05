@@ -5,30 +5,6 @@
 <head>
 <%@ include file = "theater-header.jsp"%> 
 <title>線上電影訂票系統</title>
-<!-- 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#form').validate({
-			rules : {
-				name : "required",
-				email : {
-					required : true,
-					email : true
-				},
-				password : "required",
-			},
-			messages : {
-				name : "必填",
-				email : {
-					required : "必填",
-					email : "請檢查Email格式"
-				},
-				password : "必填"
-			}
-		})
-	});
-</script>
--->
 
 </head>
 

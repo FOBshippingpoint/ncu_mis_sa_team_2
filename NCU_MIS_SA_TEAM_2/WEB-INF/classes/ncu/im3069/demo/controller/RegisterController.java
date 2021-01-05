@@ -61,6 +61,12 @@ public class RegisterController extends HttpServlet {
 			isAdmin = "on".equals(request.getParameter("is-admin"));
 		}
 		
+		if(!MemberHelper.getHelper().checkEmailisFine(email)) {
+			request.setAttribute("message", "伊媚兒已註冊，註冊失敗");
+			request.getRequestDispatcher("/home.jsp").forward(request, response);
+			return;
+		}
+		
 		Member member = new Member(name, email, password, isAdmin);
 		MemberHelper.getHelper().create(member);
 		
