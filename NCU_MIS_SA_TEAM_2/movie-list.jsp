@@ -6,37 +6,12 @@
 
 <head>
 <%@ include file = "theater-header.jsp"%> 
+<link rel=stylesheet type="text/css" href="/NCU_MIS_SA/statics/css/movie-list.css">
 
 <%
 ArrayList<Movie> movies = (ArrayList<Movie>) request.getAttribute("movies");
 %>
 <title>線上電影訂票系統</title>
-
-<style>
-	.wrapper {
-	   display: grid;
-	   grid-template-columns: repeat(5, 1fr);
-	   grid-auto-rows: 500px;
-	   grid-column-gap: 10px;
-	   grid-row-gap: 1em;
-	}
-	
-	.wrapper a{
-		text-decoration: inherit;
-		color: inherit;
-	}
-	
-	.cover-holder {
-		height: 70%;
-		background-color: gray;
-	}
-	
-	.cover-holder img{
-		height: 100%; 
-		width: 100%; 
-	}
-	
-</style>
 
 </head>
 
@@ -49,26 +24,24 @@ ArrayList<Movie> movies = (ArrayList<Movie>) request.getAttribute("movies");
 			<input type="submit" value="搜尋">
 		</form>
 	</div>
-	<div class="wrapper">
+	<ul class="movie-list">
 		<% 
 		for (Movie m: movies) {
 		%>
-			<div>
-				<div class="movie-block">
-					<a href="/NCU_MIS_SA/browse?m=<%=m.getId()%>">
-					<div class="cover-holder">
-						<img alt="" src="/NCU_MIS_SA/images/<%=m.getId()%>.png">
+			<li class="movie-card">
+				<a href="/NCU_MIS_SA/browse?m=<%=m.getId()%>">
+					<div class="img-holder">
+						<img src="/NCU_MIS_SA/images/<%=m.getId()%>.png">
 					</div>
-					</a>
-					<a href="/NCU_MIS_SA/browse?m=<%=m.getId()%>">
-						<h3"><%=m.getTitle()%></h3>
-					</a>
-				</div>
-			</div>
+					<div class="card-detail">
+						<h2 align="center"><%=m.getTitle()%></h2>
+					</div>
+				</a>
+			</li>
 		<%
 		}
 		%>
-	</div>
+	</ul>
 </div>
 </body>
 

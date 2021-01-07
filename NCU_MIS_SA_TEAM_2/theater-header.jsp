@@ -75,6 +75,7 @@ body {
 	padding: 10px 0px;
     position: fixed;
     top: 0;
+    z-index: 1;
     width: 100%;
 }
 
@@ -130,6 +131,14 @@ body {
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
 	background-color: #ff7e28;
+}
+
+.center {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 300px;
 }
 
 </style>

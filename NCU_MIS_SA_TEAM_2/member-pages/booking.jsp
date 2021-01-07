@@ -20,7 +20,6 @@ ArrayList<Showing> showings = (ArrayList<Showing>)request.getAttribute("showings
 %>
 
 <title>線上電影訂票系統</title>
-<h1>訂票</h1>
 
 <script type="text/javascript">
 	Date.prototype.toDateInputValue = (function() {

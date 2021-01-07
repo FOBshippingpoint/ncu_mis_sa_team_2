@@ -138,7 +138,7 @@ h1 {
 		</table>
 		<% for(FoodType foodType: foodTypes) { %>
 			<label for="<%= foodType.getId() %>-num"><%= foodType.getName() %>（<%= foodType.getPrice() %>元）</label>
-			<input type="number" min="0" step="1" name="<%= foodType.getId() %>-num"  value="0"><br>
+			<input type="number" min="0" max="10" step="1" name="<%= foodType.getId() %>-num"  value="0"><br>
 		<% } %>
 		<input type="submit">
 	</form>

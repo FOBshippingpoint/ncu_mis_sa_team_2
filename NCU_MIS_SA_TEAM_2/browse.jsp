@@ -7,6 +7,7 @@
 
 <head>
 <%@ include file = "theater-header.jsp"%> 
+<link rel=stylesheet type="text/css" href="/NCU_MIS_SA/statics/css/browse.css">
 
 <%
 Movie movie = (Movie) request.getAttribute("movie");
@@ -16,73 +17,82 @@ ArrayList<Showing> showings = (ArrayList<Showing>) request.getAttribute("showing
 	線上電影訂票系統
 </title>
 
-<style>
-	.cover-holder {
-		max-width: 300px;
-	}
-	
-	.cover-holder img{
-		width: 100%; 
-		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-	}
-	
-	.wrapper {
-		display: grid;
-		grid-template-columns: 300px 1fr 1fr 1fr;
-	}
-</style>
-
 </head>
 
 <body>
 	<div class="main">
-		<h1>瀏覽電影</h1>
-		<div class="wrapper">
-			<div class="cover-holder">
+		<div class="movie-content">
+			<div class="img-holder">
 				<img src="/NCU_MIS_SA/images/<%= movie.getId() %>.png">
 			</div>
-			<ul>
-				<li>標題：${movie.getTitle()}</li>
-				<li>評分：
-				<%	
-				for (int i = 0; i < movie.getRating(); i++) {
-				%>
-					<img src="https://i.imgur.com/fHvZA5R.png">
-				<%
-				}
-				%>
-				</li>
-				<li>簡介: <p><%= escape(movie.getIntroduction()) %></p></li>
-				<li>版本： ${movie.getVersion()}</li>
-				<li>價格： ${movie.getLength()}</li>
-			</ul>
-			<ul>
-				<li>上映時間： ${movie.getOnDateString()}～${movie.getOffDateString()}</li>
-				<ol>
-				<% 
-				for (int i = 0; i < showings.size(); i++) {
-				%>
-					<li><%= showings.get(i).getStartString() %>～<%= showings.get(i).getEndString() %></li>
-				<% 
-				}
-				%>
-				</ol>
-			</ul>
-			<div>
-			<%
-				if(null!=authMember) {
-					if(authMember.isAdmin()) {
-				%>
-					<a href="/NCU_MIS_SA/admin-pages/edit-movie?m=${movie.getId()}">
-						<input type="button" value="編輯">
-					</a>
-				<%
+			<h1>${movie.getTitle()}</h1>
+			<div class="wrapper">
+				<div>
+					<table class="detail">
+						<tr>
+							<td>評分</td>
+							<td>
+							<%	
+							for (int i = 0; i < movie.getRating(); i++) {
+							%>
+								<img src="https://i.imgur.com/fHvZA5R.png">
+							<%
+							}
+							%>
+							</td>
+						</tr>
+						<tr>
+							<td>版本</td>
+							<td>${movie.getVersion()}</td>
+						</tr>
+						<tr>
+							<td>片長</td>
+							<td>${movie.getLength()}</td>
+						</tr>
+						<tr>
+							<td>價格</td>
+							<td>${movie.getPrice()}</td>
+						</tr>
+						<tr>
+							<td>簡介</td>
+							<td><%= escape(movie.getIntroduction()) %></td>
+						</tr>
+						<tr>
+							<td>上映時間</td>
+							<td><%=movie.getOnDateString() + "~" + movie.getOffDateString()%></td>
+						</tr>
+					</table>
+					<%
+					if(null!=authMember) {
+						if(authMember.isAdmin()) {
+					%>
+						<a class="button" href="/NCU_MIS_SA/admin-pages/edit-movie?m=${movie.getId()}">
+							<img src="https://i.imgur.com/jEmoZns.png"><br>編輯
+						</a>
+					<%
+						}
 					}
-				}
-				%>
-				<a href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">
-					<input type="button" value="馬上訂票">
-				</a>
+					%>
+					<a class="button" href="/NCU_MIS_SA/member-pages/booking?m=${movie.getId()}">
+						<img src="https://i.imgur.com/NJVJKO3.png"><br>馬上訂票
+					</a>
+				</div>
+				<table>
+					<tr>
+						<td>場次</td>
+						<td>
+							<ul class="showings">
+							<% 
+							for (int i = 0; i < showings.size(); i++) {
+							%>
+								<li><%= showings.get(i).getStartString() %>～<%= showings.get(i).getEndString() %></li>
+							<% 
+							}
+							%>
+							</ul>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

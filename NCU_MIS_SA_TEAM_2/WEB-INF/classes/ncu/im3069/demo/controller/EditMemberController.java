@@ -45,28 +45,27 @@ public class EditMemberController extends HttpServlet {
 			doDelete(request, response);
 			return;
 		}
-	
+
 		Member member = (Member) request.getSession().getAttribute("member");
 		if (null != request.getSession().getAttribute("editMember")) {
 			member = (Member) request.getSession().getAttribute("editMember");
 		}
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
-	
+
 		member.setName(name);
 		member.setEmail(email);
-	
+
 		if (null != request.getParameter("password")) {
 			String password = request.getParameter("password");
 			member.setPassword(password);
 		}
-		if (null != request.getParameter("is-admin")) {
-			boolean isAdmin = "on".equals(request.getParameter("is-admin"));
-			member.setAdmin(isAdmin);
-		}
-	
-		MemberHelper.getHelper().update(member);
 		
+		boolean isAdmin = null != request.getParameter("is-admin");
+		member.setAdmin(isAdmin);
+
+		MemberHelper.getHelper().update(member);
+
 		request.setAttribute("message", "更新成功");
 		request.getRequestDispatcher("/admin-pages/member-list").forward(request, response);
 	}
@@ -79,7 +78,7 @@ public class EditMemberController extends HttpServlet {
 			member = (Member) request.getSession().getAttribute("editMember");
 		}
 		MemberHelper.getHelper().delete(member.getId());
-		
+
 		request.setAttribute("message", "刪除成功");
 		request.getRequestDispatcher("/admin-pages/member-list").forward(request, response);
 	}

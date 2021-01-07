@@ -168,11 +168,15 @@ h1 {
 				總價：<%=movie.getPrice() * tickets.size() + foodTotal %>元<br>
 				<hr>
 			</div>
+			<%
+			if(o.getCanceled() == null) { 
+			%>
 			<form action="/NCU_MIS_SA/member-pages/refund" method="post">
 				<input style="display: none;" type="text" value="<%=o.getId()%>" name="order-id">
 				<input type="submit" value="退票">
 			</form>	
 	<%
+			}
 		} else {
 			%>
 			<div class="order">

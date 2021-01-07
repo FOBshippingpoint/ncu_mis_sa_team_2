@@ -12,29 +12,11 @@ if (session.getAttribute("member") != null) {
 <title>線上電影訂票系統</title>
 <title>Login</title>
 
-<style>
-.center {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 300px;
-}
-
-#login-form label.error {
-	margin-left: 10px;
-	width: auto;
-	display: inline;
-}
-</style>
-
 </head>
 
 <body>
 	<div class="main">
-	<h1>登入</h1>
-	<form class="center" id="login-form" action="/NCU_MIS_SA/login"
-		method="post">
+	<form class="center" action="/NCU_MIS_SA/login" method="post">
 		<table>
 			<tr>
 				<td align="right"><label for="emial">伊媚兒：</label></td>
